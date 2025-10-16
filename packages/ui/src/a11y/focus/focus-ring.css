@@ -1,0 +1,50 @@
+/* Focus ring accesible y consistente con Tailwind v4 (outline-hidden / ring 1px) */
+
+/* Reset razonable: ocultar outline visual, pero reponerlo en :focus-visible */
+.a11y-focus-reset {
+  outline: none;
+  outline-offset: 0;
+}
+
+/* Anillo de foco visible (usa color de marca o currentColor) */
+.a11y-focus-ring:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+/* Variante con mayor contraste (útil cuando [data-contrast="high"]) */
+:root[data-contrast="high"] .a11y-focus-ring:focus-visible {
+  outline: 3px solid oklch(95% 0 0deg);
+  outline-offset: 3px;
+}
+
+/* Compatibilidad con forced-colors (Windows HC) */
+@media (forced-colors: active) {
+  .a11y-focus-ring:focus-visible {
+    outline: 2px solid CanvasText;
+  }
+}
+
+/* Helper: oculto visual pero accesible (similar a sr-only) */
+.a11y-visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.a11y-not-visually-hidden {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: normal !important;
+  border: 0 !important;
+}

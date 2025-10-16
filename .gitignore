@@ -1,0 +1,178 @@
+# ============================================================
+# 🌱 Beneficio Mutuo — Monorepo .gitignore
+# ============================================================
+# Compatible con: pnpm, Vite, TypeScript, TailwindCSS, Storybook
+# Estructura esperada:
+#  apps/
+#    web/
+#    storybook/
+#  packages/
+#    ui/
+#    aria/
+#    runtime/
+# ============================================================
+
+# --- Node / PNPM ---
+node_modules/
+.pnpm-store/
+.pnpm-debug.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+*.tgz
+
+# --- Build / Dist ---
+dist/
+build/
+out/
+.storybook-out/
+.next/
+.cache/
+.temp/
+vite.config.ts.timestamp*
+*.tsbuildinfo
+
+# --- Environment Files ---
+.env
+.env.*.local
+.env.local
+.env.development.local
+.env.production.local
+.env.test.local
+
+# --- IDEs / Editors ---
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.code-workspace
+
+# --- Logs ---
+logs/
+*.log
+*.log.*
+pnpm-debug.log*
+lerna-debug.log
+debug.log
+
+# --- Coverage / Testing ---
+coverage/
+*.lcov
+jest-html-reporters-*.html
+test-results/
+cypress/videos/
+cypress/screenshots/
+playwright-report/
+allure-results/
+allure-report/
+
+# --- Storybook ---
+storybook-static/
+apps/storybook/public/storybook/
+*.stories.mdx.cache
+*.sb-cache
+.sb-editor/
+sb.lock
+storybook-log.json
+
+# --- TypeScript ---
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# --- Vite ---
+vite.config.ts.timestamp-*
+.vite/
+.vite-deps/
+*.vite.config.timestamp-*
+vite.config.js.timestamp-*
+
+# --- Tailwind ---
+.tailwind/
+*.tailwind.config.timestamp-*
+
+# --- OS-specific ---
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+Icon?
+$RECYCLE.BIN/
+
+# --- Misc ---
+*.swp
+*.swo
+*.bak
+*.tmp
+*.orig
+*.rej
+*.log.old
+*.cache
+*.map
+*.local
+*.pid
+*.seed
+*.lock
+*.zip
+*.tar.gz
+*.rar
+
+# --- CI/CD ---
+# GitHub Actions / Pipelines artifacts
+.github/workflows/*.yml~
+*.coverage
+*.lcov-report
+*.eslintcache
+
+# --- Docs / Exports ---
+docs-dist/
+exported/
+reports/
+screenshots/
+drafts/
+notes/
+designs/
+FigmaExports/
+public/uploads/
+assets/generated/
+
+# --- Local Dev ---
+# Ignore local .env overrides and temporary data
+localdata/
+tmp/
+sandbox/
+scratch/
+draft/
+playground/
+playgrounds/
+
+# --- Monorepo Metadata ---
+.pnpm-debug.log
+.pnpm-lock.yaml
+lerna-debug.log
+turbo/
+.turbo/
+nx/
+.nx/
+nx-cache/
+
+# --- Cache Directories ---
+.cache/
+.tmp/
+.eslintcache
+.stylelintcache
+.prettier-cache
+.husky/_/
+husky-debug.log
+
+# --- macOS / Linux artifacts ---
+.AppleDouble
+.LSOverride
+.Trashes
+._*
+.Spotlight-V100
+.fseventsd
+
+# ============================================================
+# END — Beneficio Mutuo Monorepo Git Ignore
+# ============================================================

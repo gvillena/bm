@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Tokens mínimos de marca (ejemplo) */
+:root {
+  --bm-bg: 16 16 16;       /* neutral-900 */
+  --bm-fg: 245 245 245;    /* neutral-50  */
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  background-color: rgb(var(--bm-bg));
+  color: rgb(var(--bm-fg));
+}
