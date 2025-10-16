@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "build/tests",
+    "rootDir": "./",
+    "module": "CommonJS",
+    "target": "ES2020",
+    "noEmit": false,
+    "declaration": false,
+    "emitDeclarationOnly": false,
+    "verbatimModuleSyntax": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "include": ["tests/**/*.ts", "types/**/*.d.ts"],
+  "exclude": []
+}
