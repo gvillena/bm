@@ -1,13 +1,12 @@
 {
-  "name": "domain",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "@bm/domain",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc -p tsconfig.json"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.11.1"
+  "license": "MIT"
 }
