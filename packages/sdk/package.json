@@ -1,0 +1,54 @@
+{
+  "name": "@bm/sdk",
+  "version": "0.1.0",
+  "description": "Typed and resilient SDK for Beneficio Mutuo clients",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./api/client": "./dist/api/client.js",
+    "./adapters/runtime.adapter": "./dist/adapters/runtime.adapter.js",
+    "./adapters/aria.adapter": "./dist/adapters/aria.adapter.js",
+    "./hooks": "./dist/hooks/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint \"src/**/*.ts\"",
+    "test": "vitest run --coverage"
+  },
+  "keywords": [
+    "bm",
+    "sdk"
+  ],
+  "author": "Beneficio Mutuo",
+  "license": "MIT",
+  "peerDependencies": {
+    "@tanstack/react-query": "^5.62.7",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "dependencies": {
+    "@bm/domain": "workspace:*",
+    "@bm/policies": "workspace:*",
+    "@bm/runtime": "workspace:*",
+    "@bm/aria": "workspace:*",
+    "nanoid": "^5.0.7"
+  },
+  "devDependencies": {
+    "@tanstack/react-query": "^5.62.7",
+    "@testing-library/react": "^16.1.0",
+    "@types/node": "^22.9.0",
+    "@vitest/coverage-v8": "^3.0.5",
+    "msw": "^2.7.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.9.3",
+    "vitest": "^3.0.5"
+  }
+}
