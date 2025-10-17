@@ -9,20 +9,12 @@
     "apps/*"
   ],
   "scripts": {
-    "preflight": "node -e \"const v=process.version;if(!v.startsWith('v18')&&!v.startsWith('v20')){console.error('❌ Node 18/20 requerido');process.exit(1)}\" && pnpm -v",
-    "build:ordered": "pnpm --filter @bm/domain run build && pnpm --filter @bm/policies run build && pnpm --filter @bm/runtime run build && pnpm --filter @bm/aria run build && pnpm --filter @bm/sdk run build && pnpm --filter @bm/validation run build && pnpm --filter @bm/ui run build && pnpm --filter @bm/web run build",
-    "build": "turbo run build --filter=@bm/domain --filter=@bm/policies --filter=@bm/runtime --filter=@bm/aria --filter=@bm/sdk --filter=@bm/validation --filter=@bm/ui --filter=@bm/web",
-    "build:bm": "pnpm run build:ordered",
-    "dev:web": "pnpm --filter @bm/web dev",
-    "dev": "pnpm build:ordered && pnpm --filter @bm/web dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write .",
-    "typecheck": "pnpm -r run typecheck",
-    "sb:dev": "pnpm --filter @bm/storybook storybook",
-    "sb:build": "pnpm --filter @bm/storybook build-storybook",
-    "dev:turbo": "turbo run dev --parallel",
-    "clean": "rimraf node_modules packages/**/dist apps/**/dist",
-    "prepare": "husky install"
+    "build:libs": "pnpm --filter @bm/domain run build && pnpm --filter @bm/policies run build && pnpm --filter @bm/runtime run build && pnpm --filter @bm/aria run build && pnpm --filter @bm/validation run build && pnpm --filter @bm/sdk run build",
+    "build:ui": "pnpm --filter @bm/ui run build",
+    "build:web": "pnpm --filter @bm/web run build",
+    "build:bm": "pnpm run build:libs && pnpm run build:ui && pnpm run build:web",
+    "build:storybook": "pnpm --filter @bm/storybook run build-storybook",
+    "typecheck:bm": "pnpm -r exec tsc -p tsconfig.json --noEmit"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx,json,css,md}": "prettier --write"
@@ -37,9 +29,9 @@
     "prettier": "^3.6.2",
     "rimraf": "^6.0.1",
     "tailwindcss": "^4.1.14",
-    "tsup": "^8.3.0",
     "turbo": "^2.5.8",
     "typescript": "^5.9.3",
+    "unbuild": "^2.0.0",
     "vite-tsconfig-paths": "^5.1.4"
   }
 }

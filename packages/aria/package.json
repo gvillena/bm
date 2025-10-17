@@ -4,22 +4,23 @@
   "description": "Beneficio Mutuo relational intelligence and presence controller.",
   "type": "module",
   "main": "dist/index.cjs",
-  "module": "dist/index.js",
+  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
-    }
-  },
   "files": [
     "dist"
   ],
   "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
   "scripts": {
-    "build": "tsup src/index.ts --dts --format esm,cjs",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "unbuild",
+    "dev": "unbuild --stub",
+    "typecheck": "tsc -p tsconfig.json",
     "test": "node ./scripts/run-tests.mjs"
   },
   "peerDependencies": {
@@ -28,9 +29,5 @@
   "dependencies": {
     "@bm/policies": "workspace:*",
     "@bm/runtime": "workspace:*"
-  },
-  "devDependencies": {
-    "tsup": "^8.3.0",
-    "typescript": "^5.9.3"
   }
 }

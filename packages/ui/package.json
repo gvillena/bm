@@ -4,20 +4,21 @@
   "private": false,
   "type": "module",
   "main": "dist/index.cjs",
-  "module": "dist/index.js",
+  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
     },
     "./theme/tokens.css": "./src/theme/tokens.css"
   },
   "scripts": {
-    "build": "tsup src/index.ts --dts --format esm,cjs",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
-    "dev": "vite",
+    "build": "unbuild",
+    "dev": "unbuild --stub",
+    "typecheck": "tsc -p tsconfig.json",
+    "dev:playground": "vite",
     "lint": "eslint .",
     "test": "vitest run",
     "test:a11y": "vitest run tests/a11y.spec.ts",
@@ -85,7 +86,6 @@
     "prettier": "^3.3.3",
     "storybook": "^8.4.5",
     "tailwindcss": "^3.4.17",
-    "tsup": "^8.3.0",
     "typescript": "~5.9.3",
     "vite": "^5.4.11",
     "vitest": "^1.6.0",

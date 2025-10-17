@@ -3,18 +3,19 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
-    "composite": true,
     "declaration": true,
-    "declarationDir": "dist",
-    "emitDeclarationOnly": false
+    "declarationMap": true,
+    "emitDeclarationOnly": false,
+    "noEmitOnError": true,
+    "composite": true,
+    "skipLibCheck": true,
+    "moduleResolution": "Bundler",
+    "esModuleInterop": true
   },
-  "include": ["src"],
-  "references": [
-    { "path": "../aria" },
-    { "path": "../domain" },
-    { "path": "../policies" },
-    { "path": "../runtime" },
-    { "path": "../sdk" },
-    { "path": "../validation" }
-  ]
+  "include": [
+    "src/**/*",
+    "tests/**/*",
+    "tailwind.config.ts"
+  ],
+  "exclude": ["dist", "node_modules"]
 }
