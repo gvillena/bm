@@ -1,4 +1,4 @@
-@import url("../../../../packages/ui/src/theme/tokens.css");
+@import url("@bm/ui/theme/tokens.css");
 
 :root {
   color-scheme: dark light;

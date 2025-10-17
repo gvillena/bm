@@ -17,6 +17,7 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsup src/index.ts --dts --format esm,cjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "clean": "rimraf dist",
     "test": "vitest run --coverage",
     "gen:openapi": "ts-node --esm src/openapi/index.ts > openapi.json",
