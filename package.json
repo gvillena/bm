@@ -9,27 +9,29 @@
     "apps/*"
   ],
   "scripts": {
-    "build:libs": "pnpm --filter @bm/domain run build && pnpm --filter @bm/policies run build && pnpm --filter @bm/runtime run build && pnpm --filter @bm/aria run build && pnpm --filter @bm/validation run build && pnpm --filter @bm/sdk run build",
-    "build:ui": "pnpm --filter @bm/ui run build",
-    "build:web": "pnpm --filter @bm/web run build",
-    "build:bm": "pnpm run build:libs && pnpm run build:ui && pnpm run build:web",
-    "build:storybook": "pnpm --filter @bm/storybook run build-storybook",
-    "typecheck:bm": "pnpm -r exec tsc -p tsconfig.json --noEmit"
+    "nx": "nx",
+    "build:libs": "pnpm nx run-many --target=build --projects=aria,domain,policies,runtime,validation,sdk --parallel",
+    "build:ui": "pnpm nx run ui:build",
+    "build:web": "pnpm nx run web:build",
+    "build:bm": "pnpm nx run-many --target=build --all",
+    "build:storybook": "pnpm nx run storybook:build-storybook",
+    "typecheck:bm": "pnpm nx run-many --target=typecheck --all"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx,json,css,md}": "prettier --write"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.14",
+    "@nx/js": "^19.8.3",
     "eslint": "^9.37.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.4",
     "prettier": "^3.6.2",
+    "nx": "^19.8.3",
     "rimraf": "^6.0.1",
     "tailwindcss": "^4.1.14",
-    "turbo": "^2.5.8",
     "typescript": "^5.9.3",
     "unbuild": "^2.0.0",
     "vite-tsconfig-paths": "^5.1.4"
