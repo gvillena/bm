@@ -1,0 +1,38 @@
+:root {
+  --bm-bg: hsl(220 20% 98%);
+  --bm-fg: hsl(225 15% 15%);
+  --bm-accent: hsl(262 83% 62%);
+  --bm-danger: hsl(0 72% 55%);
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+
+  --shadow-sm: 0 1px 2px 0 hsl(220 18% 90% / 0.6);
+  --shadow-md: 0 10px 30px -12px hsl(220 80% 30% / 0.35);
+  --shadow-lg: 0 24px 60px -20px hsl(220 80% 30% / 0.25);
+
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+
+  --z-overlay: 1000;
+  --z-modal: 1010;
+  --z-toast: 2000;
+
+  --easing-snappy: cubic-bezier(0.2, 0.8, 0.4, 1);
+  --easing-emphasized: cubic-bezier(0.05, 0.7, 0.2, 1);
+}
+
+[data-theme="dark"] {
+  --bm-bg: hsl(230 25% 12%);
+  --bm-fg: hsl(220 20% 96%);
+  --bm-accent: hsl(262 95% 70%);
+  --bm-danger: hsl(0 75% 68%);
+
+  --shadow-sm: 0 1px 2px 0 hsl(220 40% 8% / 0.8);
+  --shadow-md: 0 10px 30px -12px hsl(220 80% 5% / 0.6);
+  --shadow-lg: 0 24px 60px -20px hsl(220 80% 5% / 0.55);
+}
