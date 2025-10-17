@@ -1,9 +1,19 @@
-export default function NotFound() {
+import { Link } from "react-router-dom";
+
+export function NotFound() {
   return (
-    <div className="mx-auto max-w-xl p-6">
-      <h1 className="mb-2 text-lg font-semibold">No encontrado</h1>
-      <p className="text-sm opacity-80">La ruta solicitada no existe.</p>
-      <a href="/" className="text-sm underline mt-2 inline-block">Volver al inicio</a>
-    </div>
+    <section className="mx-auto flex max-w-2xl flex-col items-center justify-center gap-6 py-24 text-center">
+      <p className="text-sm uppercase tracking-[0.3em] text-foreground/50">404</p>
+      <h1 className="text-3xl font-semibold text-foreground">No encontramos esa escena</h1>
+      <p className="max-w-lg text-sm text-foreground/70">
+        Podés volver al inicio o seguir explorando desde tu panel. Ningún compromiso se ejecutó sin tu consentimiento.
+      </p>
+      <Link
+        to="/"
+        className="rounded-full bg-accent px-6 py-3 text-sm font-medium text-white shadow-glow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      >
+        Volver al inicio
+      </Link>
+    </section>
   );
 }
