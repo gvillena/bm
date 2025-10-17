@@ -1,8 +1,8 @@
 {
   "name": "@bm/aria",
   "version": "0.1.0",
-  "description": "Beneficio Mutuo relational intelligence and presence controller.",
   "type": "module",
+  "source": "src/index.ts",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -14,20 +14,33 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
-    }
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@bm/policies": "workspace:*",
+    "@bm/domain": "workspace:*",
+    "@bm/runtime": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-dom": ">=19"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "scripts": {
     "build": "unbuild",
     "dev": "unbuild --stub",
-    "typecheck": "tsc -p tsconfig.json",
-    "test": "node ./scripts/run-tests.mjs"
+    "typecheck": "tsc -p tsconfig.json"
   },
-  "peerDependencies": {
-    "react": "^18.0.0"
+  "engines": {
+    "node": "22.x"
   },
-  "dependencies": {
-    "@bm/policies": "workspace:*",
-    "@bm/runtime": "workspace:*"
-  }
+  "license": "MIT"
 }

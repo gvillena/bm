@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { UiAction, UiDirectives } from "@bm/aria";
 import type { DecisionEffect, Obligation, Reason } from "@bm/policies";
 import type { ExperienceEngine, TransitionResult } from "@bm/runtime";
-import type { SceneNode } from "@bm/runtime/graph/types";
+import type { SceneNode } from "@bm/runtime";
 import { useShortcut } from "../../hooks/useShortcut.js";
 import { AriaInline } from "../presence/AriaInline.js";
 import { AriaImmersive } from "../presence/AriaImmersive.js";
@@ -24,7 +24,12 @@ type GuardState = {
   obligations?: Obligation[];
 };
 
-export function SceneRenderer({ engine, ariaUi = null, onTransition, onAction }: SceneRendererProps) {
+export function SceneRenderer({
+  engine,
+  ariaUi = null,
+  onTransition,
+  onAction,
+}: SceneRendererProps) {
   const [stateVersion, setStateVersion] = useState(0);
   const [directives, setDirectives] = useState<UiDirectives | null>(ariaUi);
   const [guardState, setGuardState] = useState<GuardState | null>(null);
@@ -59,11 +64,14 @@ export function SceneRenderer({ engine, ariaUi = null, onTransition, onAction }:
       return;
     }
 
-    const reasons: Reason[] | undefined = result.error.meta?.reasons?.map((reason) => ({
-      code: reason.code,
-      detail: reason.message
-    }));
-    const obligations: Obligation[] | undefined = result.error.meta?.obligations?.map((code) => ({ code }));
+    const reasons: Reason[] | undefined = result.error.meta?.reasons?.map(
+      (reason) => ({
+        code: reason.code,
+        detail: reason.message,
+      })
+    );
+    const obligations: Obligation[] | undefined =
+      result.error.meta?.obligations?.map((code) => ({ code }));
     if (result.error.code === "guard-denied") {
       setGuardState({ effect: "DENY", reasons, obligations });
     } else {
@@ -83,11 +91,14 @@ export function SceneRenderer({ engine, ariaUi = null, onTransition, onAction }:
         setDirectives(result.ui);
       }
     } else if (result.error.code === "guard-denied") {
-      const reasons: Reason[] | undefined = result.error.meta?.reasons?.map((reason) => ({
-        code: reason.code,
-        detail: reason.message
-      }));
-      const obligations: Obligation[] | undefined = result.error.meta?.obligations?.map((code) => ({ code }));
+      const reasons: Reason[] | undefined = result.error.meta?.reasons?.map(
+        (reason) => ({
+          code: reason.code,
+          detail: reason.message,
+        })
+      );
+      const obligations: Obligation[] | undefined =
+        result.error.meta?.obligations?.map((code) => ({ code }));
       setGuardState({ effect: "DENY", reasons, obligations });
     }
   };
@@ -107,8 +118,13 @@ export function SceneRenderer({ engine, ariaUi = null, onTransition, onAction }:
     <div className="grid gap-6 lg:grid-cols-[2fr,1fr]">
       <div className="space-y-4">
         <NodeHeader node={node} />
-        {directives ? <AriaInline directives={directives} onAction={onAction} /> : null}
-        <div className="rounded-lg border border-foreground/10 bg-background p-6" aria-live="polite">
+        {directives ? (
+          <AriaInline directives={directives} onAction={onAction} />
+        ) : null}
+        <div
+          className="rounded-lg border border-foreground/10 bg-background p-6"
+          aria-live="polite"
+        >
           {content}
         </div>
         <NodeActions
@@ -121,7 +137,9 @@ export function SceneRenderer({ engine, ariaUi = null, onTransition, onAction }:
             effect={guardState.effect}
             reasons={guardState.reasons}
             obligations={guardState.obligations}
-            onConfirmObligation={(obligation) => onAction?.({ name: "confirm-obligation", params: obligation })}
+            onConfirmObligation={(obligation) =>
+              onAction?.({ name: "confirm-obligation", params: obligation })
+            }
           />
         ) : null}
       </div>
@@ -150,14 +168,34 @@ export function SceneRenderer({ engine, ariaUi = null, onTransition, onAction }:
 function renderNode(node: SceneNode) {
   switch (node.kind) {
     case "form":
-      return <p className="text-sm text-foreground/70">Render form fields: {JSON.stringify(node.meta?.fields ?? [])}</p>;
+      return (
+        <p className="text-sm text-foreground/70">
+          Render form fields: {JSON.stringify(node.meta?.fields ?? [])}
+        </p>
+      );
     case "view":
-      return <p className="text-sm text-foreground/70">{JSON.stringify(node.meta ?? {})}</p>;
+      return (
+        <p className="text-sm text-foreground/70">
+          {JSON.stringify(node.meta ?? {})}
+        </p>
+      );
     case "decision":
-      return <p className="text-sm font-medium text-foreground">Decision node awaiting guard evaluation.</p>;
+      return (
+        <p className="text-sm font-medium text-foreground">
+          Decision node awaiting guard evaluation.
+        </p>
+      );
     case "aria":
-      return <p className="text-sm text-foreground/70">ARIA node delegates to directives.</p>;
+      return (
+        <p className="text-sm text-foreground/70">
+          ARIA node delegates to directives.
+        </p>
+      );
     default:
-      return <p className="text-sm text-foreground/70">Service node executing background actions.</p>;
+      return (
+        <p className="text-sm text-foreground/70">
+          Service node executing background actions.
+        </p>
+      );
   }
 }

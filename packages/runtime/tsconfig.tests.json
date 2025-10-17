@@ -1,17 +1,17 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../../tsconfig.node.json",
   "compilerOptions": {
+    "rootDir": ".",
     "outDir": "build/tests",
-    "rootDir": "./",
-    "module": "CommonJS",
-    "target": "ES2020",
-    "noEmit": false,
+    "noEmit": true,
     "declaration": false,
-    "emitDeclarationOnly": false,
-    "verbatimModuleSyntax": false,
-    "esModuleInterop": true,
-    "skipLibCheck": true
+    "types": ["node", "vitest/globals"]
   },
-  "include": ["tests/**/*.ts"],
-  "exclude": []
+  "include": [
+    "tests/**/*.ts",
+    "tests/**/*.tsx",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "types/**/*.d.ts"
+  ]
 }

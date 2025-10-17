@@ -5,20 +5,21 @@ export const DecisionEffect = z.enum(["PERMIT", "DENY", "REDACT"] as const);
 
 export const PolicyReason = z.object({
   code: z.string().min(2).max(64),
-  detail: SafeText.optional()
+  detail: SafeText.optional(),
 });
 
 export const PolicyObligation = z.object({
   code: z.string().min(2).max(64),
-  params: z.record(z.any()).optional()
+  // Zod v4: usar firma completa de record; y preferir unknown sobre any
+  params: z.record(z.string(), z.unknown()).optional(),
 });
 
 export const PolicyRedaction = z.object({
-  allow: z.array(z.string()).max(50)
+  allow: z.array(z.string()).max(50),
 });
 
 export const DecisionMetrics = z.object({
-  evalMs: z.number().int().min(0).optional()
+  evalMs: z.number().int().min(0).optional(),
 });
 
 export const PolicyDecision = z.object({
@@ -26,7 +27,7 @@ export const PolicyDecision = z.object({
   reasons: z.array(PolicyReason).min(1),
   obligations: z.array(PolicyObligation).optional(),
   redact: PolicyRedaction.optional(),
-  metrics: DecisionMetrics.optional()
+  metrics: DecisionMetrics.optional(),
 });
 
 export type DecisionEffect = z.infer<typeof DecisionEffect>;

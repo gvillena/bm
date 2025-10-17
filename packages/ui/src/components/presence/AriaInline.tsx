@@ -1,4 +1,4 @@
-import type { UiDirectives } from "@bm/aria";
+import type { UiDirectives } from "@bm/runtime";
 import { usePresenceHint } from "../../hooks/usePresenceHint.js";
 import { Badge } from "../base/Badge.js";
 import { Button } from "../base/Button.js";

@@ -2,6 +2,7 @@
   "name": "@bm/policies",
   "version": "0.1.0",
   "type": "module",
+  "source": "src/index.ts",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -14,13 +15,22 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
-    }
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.mjs"
+    },
+    "./package.json": "./package.json"
   },
   "scripts": {
     "build": "unbuild",
     "dev": "unbuild --stub",
     "typecheck": "tsc -p tsconfig.json",
-    "test": "pnpm exec tsc -p tsconfig.json && node --test tests/**/*.spec.mjs"
+    "test": "pnpm exec tsc -p tsconfig.json && node --test tests/**/*.spec.mjs",
+    "prepare": "pnpm build"
+  },
+  "engines": {
+    "node": "22.x"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

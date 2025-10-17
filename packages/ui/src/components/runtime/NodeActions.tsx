@@ -1,4 +1,4 @@
-import type { SceneEdge } from "@bm/runtime/graph/types";
+import type { SceneEdge } from "@bm/runtime";
 import { Button } from "../base/Button.js";
 import { sanitizeRichText } from "../../utils/sanitize.js";
 
@@ -8,7 +8,11 @@ export interface NodeActionsProps {
   readonly onTransition: (to: SceneEdge) => void;
 }
 
-export function NodeActions({ transitions, busy, onTransition }: NodeActionsProps) {
+export function NodeActions({
+  transitions,
+  busy,
+  onTransition,
+}: NodeActionsProps) {
   if (transitions.length === 0) {
     return null;
   }

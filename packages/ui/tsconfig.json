@@ -1,21 +1,24 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../tsconfig.web.json",
   "compilerOptions": {
+    "composite": true,
     "rootDir": "src",
     "outDir": "dist",
     "declaration": true,
-    "declarationMap": true,
-    "emitDeclarationOnly": false,
-    "noEmitOnError": true,
-    "composite": true,
-    "skipLibCheck": true,
-    "moduleResolution": "Bundler",
-    "esModuleInterop": true
+    "declarationMap": true
   },
   "include": [
-    "src/**/*",
-    "tests/**/*",
+    "src",
+    "tests",
     "tailwind.config.ts"
   ],
-  "exclude": ["dist", "node_modules"]
+  "exclude": [
+    "dist",
+    "node_modules",
+    "tests",
+    "tailwind.config.ts",
+    "postcss.config.ts",
+    "vitest.config.ts",
+    "storybook.config.ts"
+  ]
 }

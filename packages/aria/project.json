@@ -2,32 +2,45 @@
   "name": "aria",
   "projectType": "library",
   "sourceRoot": "packages/aria/src",
-  "implicitDependencies": ["policies", "runtime"],
   "targets": {
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["^typecheck"],
+      "inputs": ["default", "{projectRoot}/tsconfig.json"],
+      "options": {
+        "command": "pnpm exec tsc -p tsconfig.json",
+        "cwd": "packages/aria"
+      }
+    },
     "build": {
       "executor": "nx:run-commands",
+      "dependsOn": ["^build", "typecheck"],
+      "inputs": ["default", "{projectRoot}/build.config.ts"],
       "outputs": ["{projectRoot}/dist"],
       "options": {
         "command": "pnpm exec unbuild",
         "cwd": "packages/aria"
       }
     },
+    "lint": {
+      "executor": "nx:run-commands",
+      "inputs": ["default"],
+      "options": {
+        "command": "eslint packages/aria/src --max-warnings=0",
+        "cwd": "."
+      }
+    },
     "dev": {
       "executor": "nx:run-commands",
+      "inputs": ["default"],
       "options": {
         "command": "pnpm exec unbuild --stub",
         "cwd": "packages/aria"
       }
     },
-    "typecheck": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "pnpm exec tsc -p tsconfig.json",
-        "cwd": "packages/aria"
-      }
-    },
     "test": {
       "executor": "nx:run-commands",
+      "inputs": ["default", "{projectRoot}/tests/**/*"],
       "outputs": [],
       "options": {
         "command": "node ./scripts/run-tests.mjs",

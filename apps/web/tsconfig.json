@@ -1,16 +1,11 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../tsconfig.web.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "types": ["vite/client", "node"],
-    "jsx": "react-jsx",
-    "strict": true,
-    "noEmit": true,
-    "resolveJsonModule": true,
+    "composite": true,
+    "rootDir": "src",
+    "outDir": "dist",
+    "noEmit": true,                       // la app no emite TS; la build la hace Vite
     "baseUrl": "./src",
     "paths": {
       "@app/*": ["app/*"],
@@ -21,11 +16,14 @@
       "@utils/*": ["utils/*"],
       "@assets/*": ["assets/*"],
       "@styles/*": ["styles/*"]
-    }
+    },
+    "types": ["vite/client"]              // ❗️ quita "node" aquí (web only)
   },
-  "include": ["src", "tests"],
+  "include": ["src"],
   "references": [
-    { "path": "./tsconfig.node.json" },
-    { "path": "./tsconfig.app.json" }
+    // Si realmente usas sub-tsconfigs generados por Vite/Storybook/jest,
+    // mantenlos; si no, elimínalos para simplificar.
+    { "path": "./tsconfig.node.json" },   // solo si tienes config/scripts Node en la carpeta
+    { "path": "./tsconfig.app.json" }     // opcional, depende de tu setup
   ]
 }

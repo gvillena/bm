@@ -72,7 +72,7 @@ export const Money = z.object({
 export type Money = z.infer<typeof Money>;
 
 export const DurationMinutes = z
-  .number({ invalid_type_error: "Duración debe ser numérica" })
+  .number({ message: "Duración debe ser numérica" })
   .int({ message: "Duración debe ser entera" })
   .min(5, { message: "Duración mínima 5 minutos" })
   .max(24 * 60, { message: "Duración máxima 24 horas" });
@@ -96,7 +96,7 @@ export const ConsentState = z.enum(["valid", "stale", "missing"] as const);
 export type ConsentState = z.infer<typeof ConsentState>;
 
 export const VerificationLevel = z
-  .enum(["0", "1", "2"], { required_error: "Nivel de verificación requerido" })
+  .enum(["0", "1", "2"] as const, { message: "Nivel de verificación inválido" })
   .transform((value) => Number(value) as 0 | 1 | 2);
 export type VerificationLevel = 0 | 1 | 2;
 
@@ -106,7 +106,8 @@ export type ReciprocityScore = z.infer<typeof ReciprocityScore>;
 export const CareScore = percentage("careScore");
 export type CareScore = z.infer<typeof CareScore>;
 
-export const FeatureFlags = z.record(z.boolean());
+// Forma explícita en Zod v4: keyType + valueType
+export const FeatureFlags = z.record(z.string(), z.boolean());
 export type FeatureFlags = z.infer<typeof FeatureFlags>;
 
 export const AuditId = z.string().min(10).max(64);

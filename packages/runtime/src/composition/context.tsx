@@ -1,7 +1,19 @@
-import { createContext, useCallback, useContext, useMemo, useRef, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import type { SceneFlowGraph } from "../graph/types.js";
 import type { RuntimeContext, RuntimeState } from "../state/runtimeState.js";
-import { ExperienceEngine, type TransitionResult, type RuntimeError } from "../graph/engine.js";
+import {
+  ExperienceEngine,
+  type TransitionResult,
+  type RuntimeError,
+} from "../graph/engine.js";
 import type { PoliciesAdapter } from "../integration/policies.adapter.js";
 import type { AriaAdapter } from "../integration/aria/adapter.js";
 import type { Telemetry } from "../telemetry/index.js";
@@ -18,21 +30,28 @@ export interface ExperienceRuntimeAdapters {
 export interface ExperienceRuntimeValue {
   readonly engine: ExperienceEngine;
   readonly state: RuntimeState;
-  readonly transition: (to: string, opts?: { signal?: AbortSignal }) => Promise<TransitionResult>;
+  readonly transition: (
+    to: string,
+    opts?: { signal?: AbortSignal }
+  ) => Promise<TransitionResult>;
   readonly next: (opts?: { signal?: AbortSignal }) => Promise<TransitionResult>;
   readonly lastError?: RuntimeError;
   readonly ui?: UiDirectives;
   readonly obligations?: string[];
 }
 
-const ExperienceRuntimeContext = createContext<ExperienceRuntimeValue | undefined>(undefined);
+// Context con valor inicial explícito para evitar TS2554
+const ExperienceRuntimeContext = createContext<ExperienceRuntimeValue | null>(
+  null
+);
+ExperienceRuntimeContext.displayName = "ExperienceRuntimeContext";
 
 export interface ExperienceRuntimeProviderProps {
   readonly graph: SceneFlowGraph;
   readonly context: RuntimeContext;
-  readonly state?: RuntimeState;
+  readonly state?: RuntimeState; // estado inicial opcional
   readonly adapters: ExperienceRuntimeAdapters;
-  readonly children: any;
+  readonly children: ReactNode;
 }
 
 export const ExperienceRuntimeProvider = ({
@@ -42,24 +61,46 @@ export const ExperienceRuntimeProvider = ({
   adapters,
   children,
 }: ExperienceRuntimeProviderProps) => {
-  const engineRef = useRef<ExperienceEngine>();
-  if (!engineRef.current) {
-    engineRef.current = new ExperienceEngine({
+  // Creamos el engine solo cuando cambian insumos estructurales
+  // (no incluimos 'state' para no recrear el engine en cada actualización de runtime)
+  const engine = useMemo(
+    () =>
+      new ExperienceEngine({
+        graph,
+        context,
+        state,
+        policies: adapters.policies,
+        aria: adapters.aria,
+        telemetry: adapters.telemetry,
+        effects: adapters.effects,
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
       graph,
       context,
-      state,
-      policies: adapters.policies,
-      aria: adapters.aria,
-      telemetry: adapters.telemetry,
-      effects: adapters.effects,
-    });
+      adapters.policies,
+      adapters.aria,
+      adapters.telemetry,
+      adapters.effects,
+    ]
+  );
+
+  // Referencia estable si en algún momento se requiere acceso imperativo
+  const engineRef = useRef<ExperienceEngine>(engine);
+  if (engineRef.current !== engine) {
+    engineRef.current = engine;
   }
 
-  const engine = engineRef.current;
-  const [runtimeState, setRuntimeState] = useState<RuntimeState>(engine.getState());
-  const [lastError, setLastError] = useState<RuntimeError | undefined>(undefined);
+  const [runtimeState, setRuntimeState] = useState<RuntimeState>(
+    engine.getState()
+  );
+  const [lastError, setLastError] = useState<RuntimeError | undefined>(
+    undefined
+  );
   const [ui, setUi] = useState<UiDirectives | undefined>(undefined);
-  const [obligations, setObligations] = useState<string[] | undefined>(undefined);
+  const [obligations, setObligations] = useState<string[] | undefined>(
+    undefined
+  );
 
   const syncFromResult = useCallback((result: TransitionResult) => {
     if (result.ok) {
@@ -74,34 +115,48 @@ export const ExperienceRuntimeProvider = ({
 
   const transition = useCallback<ExperienceRuntimeValue["transition"]>(
     async (to, opts) => {
-      const result = await engine.transition(to, opts);
+      const result = await engineRef.current.transition(to, opts);
       syncFromResult(result);
       return result;
     },
-    [engine, syncFromResult]
+    [syncFromResult]
   );
 
   const next = useCallback<ExperienceRuntimeValue["next"]>(
     async (opts) => {
-      const result = await engine.next(opts);
+      const result = await engineRef.current.next(opts);
       syncFromResult(result);
       return result;
     },
-    [engine, syncFromResult]
+    [syncFromResult]
   );
 
   const value = useMemo<ExperienceRuntimeValue>(
-    () => ({ engine, state: runtimeState, transition, next, lastError, ui, obligations }),
-    [engine, runtimeState, transition, next, lastError, ui, obligations]
+    () => ({
+      engine: engineRef.current,
+      state: runtimeState,
+      transition,
+      next,
+      lastError,
+      ui,
+      obligations,
+    }),
+    [runtimeState, transition, next, lastError, ui, obligations]
   );
 
-  return <ExperienceRuntimeContext.Provider value={value}>{children}</ExperienceRuntimeContext.Provider>;
+  return (
+    <ExperienceRuntimeContext.Provider value={value}>
+      {children}
+    </ExperienceRuntimeContext.Provider>
+  );
 };
 
 export const useExperienceRuntimeContext = (): ExperienceRuntimeValue => {
-  const value = useContext(ExperienceRuntimeContext) as ExperienceRuntimeValue | undefined;
+  const value = useContext(ExperienceRuntimeContext);
   if (!value) {
-    throw new Error("useExperienceRuntimeContext must be used within ExperienceRuntimeProvider");
+    throw new Error(
+      "useExperienceRuntimeContext must be used within <ExperienceRuntimeProvider>"
+    );
   }
   return value;
 };

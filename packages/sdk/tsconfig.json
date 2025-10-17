@@ -1,17 +1,17 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../tsconfig.web.json",
   "compilerOptions": {
+    "composite": true,
     "rootDir": "src",
     "outDir": "dist",
     "declaration": true,
-    "declarationMap": true,
-    "emitDeclarationOnly": false,
-    "noEmitOnError": true,
-    "composite": true,
-    "skipLibCheck": true,
-    "moduleResolution": "Bundler",
-    "esModuleInterop": true
+    "declarationMap": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["dist", "node_modules"]
+  "include": ["src"],
+  "references": [
+    { "path": "../domain" },
+    { "path": "../policies" },
+    { "path": "../runtime" },
+    { "path": "../aria" }
+  ]
 }

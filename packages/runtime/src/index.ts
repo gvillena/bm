@@ -1,9 +1,27 @@
-export { ExperienceEngine, type TransitionResult, type RuntimeError } from "./graph/engine.js";
-export type { SceneFlowGraph, SceneNode, SceneEdge, GuardRef } from "./graph/types.js";
+export {
+  ExperienceEngine,
+  type TransitionResult,
+  type RuntimeError,
+} from "./graph/engine.js";
+export type {
+  SceneFlowGraph,
+  SceneNode,
+  SceneEdge,
+  GuardRef,
+} from "./graph/types.js";
 export { OnboardingGraph, GraphRegistry } from "./graph/registry.js";
-export type { RuntimeContext, RuntimeState, TransitionRecord } from "./state/runtimeState.js";
-export type { PoliciesAdapter, PolicyDecisionResult, PolicyDecision } from "./integration/policies.adapter.js";
-export type { UiDirectives } from "./integration/aria/directives.js";
+export type {
+  RuntimeContext,
+  RuntimeState,
+  TransitionRecord,
+} from "./state/runtimeState.js";
+export type {
+  PoliciesAdapter,
+  PolicyDecisionResult,
+  PolicyDecision,
+} from "./integration/policies.adapter.js";
+export type { UiDirectives, UiAction, Tone } from "./types/ui.js";
+
 export type { Telemetry } from "./telemetry/index.js";
 export { ExperienceRuntimeProvider } from "./composition/context.js";
 export { useExperienceRuntime } from "./composition/useExperienceRuntime.js";

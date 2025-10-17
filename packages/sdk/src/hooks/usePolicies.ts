@@ -1,12 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { requireClients } from "../clients/registry.js";
-import type { ViewerContext } from "../types/index.js";
+import type { ViewerContext } from "@bm/policies";
 import { QK } from "./queryKeys.js";
 import { safeJson } from "../utils/safeJson.js";
 
 function hashViewerContext(vc: ViewerContext): string {
   const payload = safeJson.stringify(vc);
-  if (typeof globalThis !== "undefined" && typeof globalThis.btoa === "function") {
+  if (
+    typeof globalThis !== "undefined" &&
+    typeof globalThis.btoa === "function"
+  ) {
     return globalThis.btoa(payload);
   }
   if (typeof Buffer !== "undefined") {
@@ -27,7 +30,10 @@ export function useAuthorizeViewMoment(vc: ViewerContext, id: string) {
   });
 }
 
-export function useAuthorizeEditAgreement(vc: ViewerContext, agreementId: string) {
+export function useAuthorizeEditAgreement(
+  vc: ViewerContext,
+  agreementId: string
+) {
   const clients = requireClients();
   const hash = hashViewerContext(vc);
   return useQuery({
