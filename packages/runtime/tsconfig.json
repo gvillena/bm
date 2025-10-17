@@ -5,14 +5,7 @@
     "outDir": "dist",
     "composite": false,
     "declaration": true,
-    "module": "ESNext",
-    "target": "ES2021",
-    "moduleResolution": "Node",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": false,
-    "forceConsistentCasingInFileNames": true,
-    "jsx": "react-jsx"
+    "declarationMap": true
   },
   "include": [
     "src/**/*",

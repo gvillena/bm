@@ -1,36 +1,28 @@
 {
   "compilerOptions": {
-    /* ===== Core Environment ===== */
-    "target": "ES2021",
+    "target": "ES2022",
     "module": "ESNext",
-    "moduleResolution": "Node",
-    "lib": ["ES2021", "DOM", "DOM.Iterable"],
+    "moduleResolution": "Bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
-
-    /* ===== Compatibility ===== */
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-
-    /* ===== Type Safety ===== */
     "strict": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-
-    /* ===== Module Detection ===== */
     "moduleDetection": "force",
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
-
-    /* ===== Path Aliases ===== */
     "baseUrl": ".",
     "paths": {
       "@bm/domain/*": ["packages/domain/src/*"],
+      "@bm/policies/*": ["packages/policies/src/*"],
       "@bm/runtime/*": ["packages/runtime/src/*"],
       "@bm/aria/*": ["packages/aria/src/*"],
       "@bm/sdk/*": ["packages/sdk/src/*"],
-      "@bm/ui/*": ["packages/ui/src/*"],
-      "@bm/experience/*": ["apps/web/src/experience/*"]
+      "@bm/validation/*": ["packages/validation/src/*"],
+      "@bm/ui/*": ["packages/ui/src/*"]
     }
   }
 }

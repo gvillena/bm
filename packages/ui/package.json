@@ -3,8 +3,19 @@
   "version": "1.0.0",
   "private": false,
   "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./theme/tokens.css": "./src/theme/tokens.css"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc -b && tailwindcss -i ./src/theme/tokens.css -o ./dist/tokens.css && vite build",
+    "build": "tsup src/index.ts --dts --format esm,cjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "dev": "vite",
     "lint": "eslint .",
     "test": "vitest run",
@@ -13,6 +24,10 @@
     "storybook:build": "storybook build",
     "format": "prettier --write \"**/*.{ts,tsx,md,css}\""
   },
+  "files": [
+    "dist",
+    "src/theme/tokens.css"
+  ],
   "dependencies": {
     "@bm/aria": "workspace:*",
     "@bm/domain": "workspace:*",
@@ -67,6 +82,7 @@
     "prettier": "^3.3.3",
     "storybook": "^8.4.5",
     "tailwindcss": "^3.4.17",
+    "tsup": "^8.3.0",
     "typescript": "~5.9.3",
     "vite": "^5.4.11",
     "vitest": "^1.6.0",

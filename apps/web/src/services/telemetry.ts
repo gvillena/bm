@@ -51,21 +51,26 @@ function ensureProvider(): WebTracerProvider {
     })
   });
 
-  const exporter = new OTLPTraceExporter({ url: env.otelExporterUrl });
-  tracerProvider.addSpanProcessor(new SimpleSpanProcessor(exporter));
   tracerProvider.register({ contextManager: new ZoneContextManager() });
 
-  registerInstrumentations({
-    instrumentations: [
-      new FetchInstrumentation({
-        clearTimingResources: true,
-        propagateTraceHeaderCorsUrls: [/.*/],
-        applyCustomAttributesOnSpan(span, request) {
-          span.setAttribute("http.request.method", request.request.method);
-        }
-      })
-    ]
-  });
+  if (env.telemetryEnabled && env.otelExporterUrl) {
+    const exporter = new OTLPTraceExporter({ url: env.otelExporterUrl });
+    tracerProvider.addSpanProcessor(new SimpleSpanProcessor(exporter));
+  }
+
+  if (env.telemetryEnabled) {
+    registerInstrumentations({
+      instrumentations: [
+        new FetchInstrumentation({
+          clearTimingResources: true,
+          propagateTraceHeaderCorsUrls: [/.*/],
+          applyCustomAttributesOnSpan(span, request) {
+            span.setAttribute("http.request.method", request.request.method);
+          }
+        })
+      ]
+    });
+  }
 
   return tracerProvider;
 }

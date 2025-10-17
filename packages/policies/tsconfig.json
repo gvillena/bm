@@ -6,13 +6,8 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "strict": true,
-    "module": "NodeNext",
-    "target": "ES2022",
-    "moduleResolution": "NodeNext",
     "composite": true,
-    "incremental": true,
-    "types": []
+    "incremental": true
   },
   "include": ["src"],
   "exclude": ["dist", "tests"]

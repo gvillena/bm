@@ -25,12 +25,18 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "baseUrl": "./",
-    "paths": { 
+    "paths": {
       "@/*": ["./src/*"],
-      "@/app/*": ["src/app/*"],   
+      "@app/*": ["src/app/*"],
+      "@experience/*": ["src/experience/*"],
+      "@scenes/*": ["src/scenes/*"],
+      "@services/*": ["src/services/*"],
+      "@motion/*": ["src/motion/*"],
+      "@utils/*": ["src/utils/*"],
+      "@assets/*": ["src/assets/*"],
+      "@styles/*": ["src/styles/*"],
       "@bm/ui/*": ["../../packages/ui/src/*"]
-    },    
+    }
   },
-  "include": ["src"],
-  
+  "include": ["src"]
 }

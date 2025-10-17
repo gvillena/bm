@@ -8,7 +8,8 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     }
   },
   "files": [
@@ -17,8 +18,12 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsup src/index.ts --dts --format esm,cjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "pnpm exec tsc -p tsconfig.json && node --test tests/**/*.spec.mjs"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "tsup": "^8.3.0",
+    "typescript": "^5.9.3"
+  }
 }

@@ -1,17 +1,12 @@
 import type { Config } from "tailwindcss";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import tailwindcssAnimate from "tailwindcss-animate";
-
-const projectDir = path.dirname(fileURLToPath(import.meta.url));
 
 const config: Config = {
   darkMode: ["class"],
   content: [
-    path.join(projectDir, "index.html"),
-    path.join(projectDir, "src/**/*.{ts,tsx}"),
-    path.join(projectDir, "../../packages/ui/src/**/*.{ts,tsx}"),
-    path.join(projectDir, "../../packages/ui/dist/**/*.js")
+    "./index.html",
+    "./src/**/*.{ts,tsx}",
+    "../../packages/ui/src/**/*.{ts,tsx}"
   ],
   theme: {
     extend: {
