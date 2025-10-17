@@ -1,0 +1,39 @@
+{
+  "name": "aria",
+  "projectType": "library",
+  "sourceRoot": "packages/aria/src",
+  "implicitDependencies": ["policies", "runtime"],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/dist"],
+      "options": {
+        "command": "pnpm exec unbuild",
+        "cwd": "packages/aria"
+      }
+    },
+    "dev": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm exec unbuild --stub",
+        "cwd": "packages/aria"
+      }
+    },
+    "typecheck": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm exec tsc -p tsconfig.json",
+        "cwd": "packages/aria"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "node ./scripts/run-tests.mjs",
+        "cwd": "packages/aria"
+      }
+    }
+  },
+  "tags": ["type:library", "scope:aria"]
+}
