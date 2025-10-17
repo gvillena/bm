@@ -1,0 +1,42 @@
+{
+  "name": "@bm/validation",
+  "version": "0.1.0",
+  "description": "Shared runtime validation schemas and DTO contracts for Beneficio Mutuo.",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": ["dist", "README.md"],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup src/index.ts --dts --format esm,cjs",
+    "clean": "rimraf dist",
+    "test": "vitest run --coverage",
+    "gen:openapi": "ts-node --esm src/openapi/index.ts > openapi.json",
+    "gen:jsonschema": "ts-node --esm src/openapi/generators.ts jsonschema > schemas.json"
+  },
+  "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^7.1.0",
+    "zod": "^3.23.8",
+    "zod-to-json-schema": "^3.23.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.12",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "tsup": "^8.3.0",
+    "typescript": "^5.9.3",
+    "vitest": "^2.1.4"
+  },
+  "engines": {
+    "node": ">=18.18"
+  },
+  "license": "MIT"
+}
