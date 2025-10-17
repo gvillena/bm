@@ -1,31 +1,32 @@
 {
   "name": "bm",
   "version": "1.0.0",
-  "description": "",
+  "description": "Beneficio Mutuo Monorepo — Agreement-Centric Relationship Platform",
   "private": true,
+  "packageManager": "pnpm@10.11.1",
   "workspaces": [
     "packages/*",
     "apps/*"
   ],
   "scripts": {
-    "preflight": "node -e \"const v=process.version; if(!v.startsWith('v18')&&!v.startsWith('v20')){console.error('Node 18/20 requerido'); process.exit(1)}\" && pnpm -v",
-    "build:packages": "pnpm -r --filter ./packages/* run build",
-    "typecheck": "pnpm -r run typecheck",
+    "preflight": "node -e \"const v=process.version;if(!v.startsWith('v18')&&!v.startsWith('v20')){console.error('❌ Node 18/20 requerido');process.exit(1)}\" && pnpm -v",
+    "build:ordered": "pnpm --filter @bm/domain run build && pnpm --filter @bm/policies run build && pnpm --filter @bm/runtime run build && pnpm --filter @bm/aria run build && pnpm --filter @bm/sdk run build && pnpm --filter @bm/validation run build && pnpm --filter @bm/ui run build && pnpm --filter @bm/web run build",
+    "build": "turbo run build --filter=@bm/domain --filter=@bm/policies --filter=@bm/runtime --filter=@bm/aria --filter=@bm/sdk --filter=@bm/validation --filter=@bm/ui --filter=@bm/web",
+    "build:bm": "pnpm run build:ordered",
     "dev:web": "pnpm --filter @bm/web dev",
-    "dev": "pnpm build:packages && pnpm dev:web",
-    "clean": "rimraf node_modules packages/**/dist apps/**/dist",
-    "build": "turbo run build",
-    "dev:turbo": "turbo run dev --parallel",
+    "dev": "pnpm build:ordered && pnpm --filter @bm/web dev",
     "lint": "turbo run lint",
     "format": "prettier --write .",
-    "prepare": "husky install",
-    "sb:dev": "pnpm -F @bm/storybook storybook",
-    "sb:build": "pnpm -F @bm/storybook build-storybook"
+    "typecheck": "pnpm -r run typecheck",
+    "sb:dev": "pnpm --filter @bm/storybook storybook",
+    "sb:build": "pnpm --filter @bm/storybook build-storybook",
+    "dev:turbo": "turbo run dev --parallel",
+    "clean": "rimraf node_modules packages/**/dist apps/**/dist",
+    "prepare": "husky install"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.11.1",
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,json,css,md}": "prettier --write"
+  },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.14",
     "eslint": "^9.37.0",
@@ -40,8 +41,5 @@
     "turbo": "^2.5.8",
     "typescript": "^5.9.3",
     "vite-tsconfig-paths": "^5.1.4"
-  },
-  "lint-staged": {
-    "*.{ts,tsx,js,jsx,json,css,md}": "prettier --write"
   }
 }

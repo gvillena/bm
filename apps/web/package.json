@@ -46,7 +46,6 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^14.5.2",
-    "@types/gsap": "^3.0.4",
     "@types/node": "^20.17.16",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.2",

@@ -1,9 +1,18 @@
-import { cloneElement, isValidElement, useId } from "react";
+import {
+  cloneElement,
+  isValidElement,
+  useId,
+  type ReactElement,
+  type ReactNode,
+} from "react";
 import { useFormContext } from "react-hook-form";
 import { cn } from "../../utils/cn.js";
 import { Label } from "../base/Label.js";
 
-function getNestedError(errors: Record<string, unknown>, name: string): string | undefined {
+function getNestedError(
+  errors: Record<string, unknown>,
+  name: string
+): string | undefined {
   const segments = name.split(".");
   let current: unknown = errors;
   for (const segment of segments) {
@@ -22,31 +31,46 @@ function getNestedError(errors: Record<string, unknown>, name: string): string |
 
 export interface FieldProps {
   readonly name: string;
-  readonly label: React.ReactNode;
-  readonly description?: React.ReactNode;
-  readonly hint?: React.ReactNode;
+  readonly label: ReactNode;
+  readonly description?: ReactNode;
+  readonly hint?: ReactNode;
   readonly required?: boolean;
-  readonly children: React.ReactElement;
+  readonly children: ReactElement<any>; // 👈 explicit generic React element
 }
 
-export function Field({ name, label, description, hint, required, children }: FieldProps) {
+export function Field({
+  name,
+  label,
+  description,
+  hint,
+  required,
+  children,
+}: FieldProps) {
   const { formState } = useFormContext();
   const fieldId = useId();
   const descriptionId = description ? `${fieldId}-description` : undefined;
   const hintId = hint ? `${fieldId}-hint` : undefined;
   const errorId = `${fieldId}-error`;
-  const errorMessage = getNestedError(formState.errors as Record<string, unknown>, name);
+  const errorMessage = getNestedError(
+    formState.errors as Record<string, unknown>,
+    name
+  );
 
-  const describedBy = [descriptionId, hintId, errorMessage ? errorId : undefined]
+  const describedBy = [
+    descriptionId,
+    hintId,
+    errorMessage ? errorId : undefined,
+  ]
     .filter(Boolean)
     .join(" ");
 
+  // 🧩 fix: cast children to ReactElement<any> to allow id prop safely
   const control = isValidElement(children)
-    ? cloneElement(children, {
+    ? cloneElement(children as ReactElement<any>, {
         id: fieldId,
         name,
         "aria-invalid": Boolean(errorMessage),
-        "aria-describedby": describedBy || undefined
+        "aria-describedby": describedBy || undefined,
       })
     : children;
 
@@ -54,21 +78,31 @@ export function Field({ name, label, description, hint, required, children }: Fi
     <div className="flex flex-col gap-1">
       <Label htmlFor={fieldId} className="flex items-center gap-1">
         {label}
-        {required ? <span aria-hidden="true" className="text-danger">*</span> : null}
+        {required ? (
+          <span aria-hidden="true" className="text-danger">
+            *
+          </span>
+        ) : null}
       </Label>
+
       {description ? (
         <p id={descriptionId} className="text-sm text-foreground/70">
           {description}
         </p>
       ) : null}
+
       {control}
+
       {hint ? (
         <p id={hintId} className="text-xs text-foreground/60">
           {hint}
         </p>
       ) : null}
+
       {errorMessage ? (
-        <p id={errorId} role="alert" className={cn("text-sm text-danger")}>{errorMessage}</p>
+        <p id={errorId} role="alert" className={cn("text-sm text-danger")}>
+          {errorMessage}
+        </p>
       ) : null}
     </div>
   );

@@ -52,32 +52,41 @@ export function CommandK({
   labels,
   onNavigateScene,
   onOpenEditor,
-  onIntent
+  onIntent,
 }: CommandKProps) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const motionPreset = useMotionPreset(slideUp);
 
+  // 🧠 keyboard shortcuts
   useShortcut({ key: "k", metaKey: true }, () => setOpen((prev) => !prev));
   useShortcut({ key: "Escape" }, () => setOpen(false));
 
-  const momentQuery = useMomentList(search ? { q: search, pageSize: 5 } : undefined);
+  // 🔍 query for Moments
+  const momentQuery = useMomentList(
+    search ? { q: search, pageSize: 5 } : undefined
+  );
 
   const momentResults = useMemo(() => {
-    if (!momentQuery.data) {
-      return [] as { id: string; title: string }[];
-    }
-    return momentQuery.data.items?.map((moment) => ({
+    if (!momentQuery.data?.items) return [];
+    return momentQuery.data.items.map((moment) => ({
       id: moment.id,
-      title: sanitizeRichText(moment.title ?? moment.id)
-    })) ?? [];
+      title: String(
+        sanitizeRichText(String(moment.title ?? moment.id)) as string
+      ),
+    }));
   }, [momentQuery.data]);
 
   return (
     <AnimatePresence>
-      {open ? (
-        <Command.Dialog open onOpenChange={setOpen} label={sanitizeRichText(labels?.placeholder ?? "Command palette")}>
+      {open && (
+        <Command.Dialog
+          open={open}
+          onOpenChange={(value: boolean) => setOpen(value)}
+          label={String(labels?.placeholder ?? "Command palette")} // ✅ fixed TS2345
+        >
           <Command.Overlay className="fixed inset-0 z-overlay bg-foreground/50" />
+
           <Command.Content asChild>
             <motion.div
               variants={motionPreset}
@@ -89,17 +98,21 @@ export function CommandK({
               <Command.Input
                 autoFocus
                 value={search}
-                onValueChange={setSearch}
-                placeholder={sanitizeRichText(labels?.placeholder ?? "Type a command or search")}
+                onValueChange={(val: string) => setSearch(val)} // ✅ recognized by cmdk
+                placeholder={String(
+                  labels?.placeholder ?? "Type a command or search"
+                )}
                 aria-label="Search"
                 className="w-full border-b border-foreground/10 bg-transparent px-4 py-3 text-base outline-none"
               />
+
               <Command.List className="max-h-80 overflow-y-auto p-2">
                 <Command.Empty className="px-3 py-4 text-sm text-foreground/60">
-                  {sanitizeRichText(labels?.empty ?? "No matches found")}
+                  {String(labels?.empty ?? "No matches found")}
                 </Command.Empty>
-                {scenes.length > 0 ? (
-                  <Command.Group heading={sanitizeRichText(labels?.scenes ?? "Scenes")}>
+
+                {scenes.length > 0 && (
+                  <Command.Group heading={String(labels?.scenes ?? "Scenes")}>
                     {scenes.map((scene) => (
                       <Command.Item
                         key={scene.id}
@@ -109,13 +122,14 @@ export function CommandK({
                           onNavigateScene?.(scene.id);
                         }}
                       >
-                        {sanitizeRichText(scene.title)}
+                        {String(scene.title)}
                       </Command.Item>
                     ))}
                   </Command.Group>
-                ) : null}
-                {engine ? (
-                  <Command.Group heading={sanitizeRichText(labels?.runtime ?? "Runtime")}>
+                )}
+
+                {engine && (
+                  <Command.Group heading={String(labels?.runtime ?? "Runtime")}>
                     <Command.Item
                       value="runtime-next"
                       onSelect={() => {
@@ -123,12 +137,13 @@ export function CommandK({
                         void engine.next();
                       }}
                     >
-                      {sanitizeRichText(labels?.next ?? "Advance to next scene")}
+                      {String(labels?.next ?? "Advance to next scene")}
                     </Command.Item>
                   </Command.Group>
-                ) : null}
-                {editors.length > 0 ? (
-                  <Command.Group heading={sanitizeRichText(labels?.editors ?? "Editors")}>
+                )}
+
+                {editors.length > 0 && (
+                  <Command.Group heading={String(labels?.editors ?? "Editors")}>
                     {editors.map((editor) => (
                       <Command.Item
                         key={editor.id}
@@ -138,13 +153,16 @@ export function CommandK({
                           onOpenEditor?.(editor.id);
                         }}
                       >
-                        {sanitizeRichText(editor.title)}
+                        {String(editor.title)}
                       </Command.Item>
                     ))}
                   </Command.Group>
-                ) : null}
-                {intents.length > 0 ? (
-                  <Command.Group heading={sanitizeRichText(labels?.intents ?? "AI Intents")}>
+                )}
+
+                {intents.length > 0 && (
+                  <Command.Group
+                    heading={String(labels?.intents ?? "AI Intents")}
+                  >
                     {intents.map((intent) => (
                       <Command.Item
                         key={intent.id}
@@ -154,25 +172,29 @@ export function CommandK({
                           onIntent?.(intent);
                         }}
                       >
-                        {sanitizeRichText(intent.label)}
+                        {String(intent.label)}
                       </Command.Item>
                     ))}
                   </Command.Group>
-                ) : null}
-                {momentResults.length > 0 ? (
-                  <Command.Group heading={sanitizeRichText(labels?.moments ?? "Moments")}>
+                )}
+
+                {momentResults.length > 0 && (
+                  <Command.Group heading={String(labels?.moments ?? "Moments")}>
                     {momentResults.map((moment) => (
-                      <Command.Item key={moment.id} value={`moment-${moment.id}`}>
-                        {sanitizeRichText(moment.title)}
+                      <Command.Item
+                        key={moment.id}
+                        value={`moment-${moment.id}`}
+                      >
+                        {String(moment.title)}
                       </Command.Item>
                     ))}
                   </Command.Group>
-                ) : null}
+                )}
               </Command.List>
             </motion.div>
           </Command.Content>
         </Command.Dialog>
-      ) : null}
+      )}
     </AnimatePresence>
   );
 }

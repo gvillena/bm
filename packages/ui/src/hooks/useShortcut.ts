@@ -16,10 +16,10 @@ export interface UseShortcutOptions {
 function matchesShortcut(event: KeyboardEvent, shortcut: ShortcutKey) {
   return (
     event.key.toLowerCase() === shortcut.key.toLowerCase() &&
-    (!!shortcut.ctrlKey === event.ctrlKey) &&
-    (!!shortcut.altKey === event.altKey) &&
-    (!!shortcut.shiftKey === event.shiftKey) &&
-    (!!shortcut.metaKey === event.metaKey)
+    !!shortcut.ctrlKey === event.ctrlKey &&
+    !!shortcut.altKey === event.altKey &&
+    !!shortcut.shiftKey === event.shiftKey &&
+    !!shortcut.metaKey === event.metaKey
   );
 }
 
@@ -30,17 +30,28 @@ export function useShortcut(
 ) {
   useEffect(() => {
     const listener = (event: KeyboardEvent) => {
-      if (!matchesShortcut(event, shortcut)) {
-        return;
-      }
-      if (preventDefault) {
-        event.preventDefault();
-      }
+      if (!matchesShortcut(event, shortcut)) return;
+
+      if (preventDefault) event.preventDefault();
+
       callback(event);
     };
 
     const listenTarget = target ?? document;
-    listenTarget.addEventListener("keydown", listener);
-    return () => listenTarget.removeEventListener("keydown", listener);
-  }, [shortcut.key, shortcut.altKey, shortcut.ctrlKey, shortcut.metaKey, shortcut.shiftKey, callback, preventDefault, target]);
+
+    // ✅ TypeScript fix: cast listener as EventListener para cumplir con la firma DOM
+    listenTarget.addEventListener("keydown", listener as EventListener);
+    return () => {
+      listenTarget.removeEventListener("keydown", listener as EventListener);
+    };
+  }, [
+    shortcut.key,
+    shortcut.altKey,
+    shortcut.ctrlKey,
+    shortcut.metaKey,
+    shortcut.shiftKey,
+    callback,
+    preventDefault,
+    target,
+  ]);
 }

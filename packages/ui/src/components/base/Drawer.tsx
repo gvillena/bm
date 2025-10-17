@@ -6,11 +6,20 @@ export const DrawerTrigger = DrawerPrimitive.Trigger;
 export const DrawerPortal = DrawerPrimitive.Portal;
 export const DrawerClose = DrawerPrimitive.Close;
 
-export const DrawerOverlay = ({ className, ...props }: DrawerPrimitive.OverlayProps) => (
-  <DrawerPrimitive.Overlay className={cn("fixed inset-0 z-overlay bg-foreground/40", className)} {...props} />
+export const DrawerOverlay = ({
+  className,
+  ...props
+}: DrawerPrimitive.OverlayProps) => (
+  <DrawerPrimitive.Overlay
+    className={cn("fixed inset-0 z-overlay bg-foreground/40", className)}
+    {...props}
+  />
 );
 
-export const DrawerContent = ({ className, ...props }: DrawerPrimitive.ContentProps) => (
+export const DrawerContent = ({
+  className,
+  ...props
+}: DrawerPrimitive.ContentProps) => (
   <DrawerPortal>
     <DrawerOverlay />
     <DrawerPrimitive.Content
@@ -23,6 +32,16 @@ export const DrawerContent = ({ className, ...props }: DrawerPrimitive.ContentPr
   </DrawerPortal>
 );
 
-export const DrawerHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("mx-auto mb-4 h-1.5 w-16 rounded-full bg-foreground/20", className)} {...props} aria-hidden="true" />
+export const DrawerHeader = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      "mx-auto mb-4 h-1.5 w-16 rounded-full bg-foreground/20",
+      className
+    )}
+    {...props}
+    aria-hidden="true"
+  />
 );

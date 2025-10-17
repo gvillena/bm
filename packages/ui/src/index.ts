@@ -8,8 +8,16 @@ export * from "./components/form/Controls/index.js";
 export * from "./components/feedback/index.js";
 export * from "./components/navigation/index.js";
 export * from "./components/presence/index.js";
+// Patterns
 export * from "./components/patterns/index.js";
-export * from "./components/runtime/index.js";
+
+// Runtime (sin colisiones)
+export {
+  SceneRenderer,
+  NodeHeader,
+  NodeActions,
+  GuardOutcome, // export explícito y único
+} from "./components/runtime/index.js";
 export * from "./hooks/index.js";
 export { cn } from "./utils/cn.js";
 export * from "./utils/sanitize.js";
