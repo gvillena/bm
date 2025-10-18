@@ -1,4 +1,4 @@
-import { SceneRenderer } from "@bm/ui/components/runtime";
+import { SceneRenderer } from "@bm/ui";
 import { ExperienceBoundary, useExperience } from "@experience/runtime/hooks";
 import { useAriaPresenceValue } from "@app/providers/AriaPresenceProvider";
 import { OnboardingSteps } from "@scenes/Onboarding/Steps";

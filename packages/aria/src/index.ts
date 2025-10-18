@@ -93,4 +93,4 @@ export {
   isWithinWindow,
 } from "./utils/time.js";
 
-export type { UiDirectives, UiAction } from "./presence/types.js";
+export type { UiDirectives } from "./presence/types.js";

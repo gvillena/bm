@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useContext, useMemo, type ReactNode } from "react";
 import { PresenceBudget, PresenceController, defaultGuardrails } from "@bm/aria";
 import type { AriaBridge } from "@bm/sdk";
 import { getAriaBridge } from "@services/sdk";
@@ -11,7 +11,7 @@ interface AriaPresenceValue {
 
 const AriaPresenceContext = createContext<AriaPresenceValue | null>(null);
 
-export function AriaPresenceProvider({ children }: { children: React.ReactNode }) {
+export function AriaPresenceProvider({ children }: { children: ReactNode }) {
   const runtime = useRuntimeEnvironment();
   const controller = useMemo(
     () =>

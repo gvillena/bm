@@ -6,7 +6,7 @@ import { FetchInstrumentation } from "@opentelemetry/instrumentation-fetch";
 import { Resource } from "@opentelemetry/resources";
 import { WebTracerProvider, SimpleSpanProcessor } from "@opentelemetry/sdk-trace-web";
 import { SemanticResourceAttributes } from "@opentelemetry/semantic-conventions";
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useContext, useMemo, type ReactNode } from "react";
 import type { Telemetry as RuntimeTelemetry } from "@bm/runtime";
 import type { AriaTelemetry } from "@bm/aria";
 import type { SdkTelemetry } from "@bm/sdk";
@@ -240,7 +240,7 @@ function initializeTelemetry(): FrontendTelemetry {
   } satisfies FrontendTelemetry;
 }
 
-export function TelemetryProvider({ children }: { children: React.ReactNode }) {
+export function TelemetryProvider({ children }: { children: ReactNode }) {
   const telemetry = useMemo(initializeTelemetry, []);
   return <TelemetryContext.Provider value={telemetry}>{children}</TelemetryContext.Provider>;
 }

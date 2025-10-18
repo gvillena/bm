@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ERDSimulator, type SimulatorField } from "@bm/ui/components/patterns/ERDSimulator";
+import { ERDSimulator, type SimulatorField } from "@bm/ui";
 import type { ViewerContext } from "@bm/policies";
 import { motion } from "framer-motion";
 import { fadeIn } from "@motion/presets";

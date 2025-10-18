@@ -1,6 +1,6 @@
 export * from "./theme/index.js";
 export * from "./theme/motion.js";
-export { UIProviders } from "./providers/UIProviders.js";
+export { UIProviders, useUIProviders } from "./providers/UIProviders.js";
 export { QueryProvider } from "./providers/QueryProvider.js";
 export * from "./components/base/index.js";
 export { Form, Field, FormActions } from "./components/form/index.js";
