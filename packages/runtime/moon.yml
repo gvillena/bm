@@ -1,0 +1,36 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+language: 'typescript'
+type: 'library'
+tags:
+  - 'type:library'
+  - 'scope:runtime'
+
+tasks:
+  build:
+    command: 'pnpm exec unbuild'
+    deps:
+      - '^:build'
+    inputs:
+      - 'src/**/*'
+      - 'package.json'
+      - 'tsconfig.json'
+    outputs:
+      - 'dist'
+  dev:
+    command: 'pnpm exec unbuild'
+    args:
+      - '--stub'
+    options:
+      cache: false
+  typecheck:
+    command: 'pnpm exec tsc'
+    args:
+      - '-p'
+      - 'tsconfig.json'
+  test:
+    command: 'node'
+    args:
+      - './scripts/run-tests.mjs'
+    inputs:
+      - 'tests/**/*'

@@ -12,14 +12,13 @@
     "node": "22.x"
   },
   "scripts": {
-    "nx": "nx",
     "moon": "moon",
-    "build:libs": "pnpm nx run-many --target=build --projects=aria,domain,policies,runtime,validation,sdk --parallel",
-    "build:ui": "pnpm nx run ui:build",
-    "build:web": "pnpm nx run web:build",
-    "build:bm": "pnpm nx run-many --target=build --all",
-    "build:storybook": "pnpm nx run storybook:build-storybook",
-    "typecheck:bm": "pnpm nx run-many --target=typecheck --all",
+    "build:libs": "pnpm moon run validation:build sdk:build",
+    "build:ui": "pnpm moon run ui:build",
+    "build:web": "pnpm moon run web:build",
+    "build:bm": "pnpm moon run web:build storybook:build",
+    "build:storybook": "pnpm moon run storybook:build-storybook",
+    "typecheck:bm": "pnpm moon run web:typecheck storybook:typecheck",
     "clean": "rimraf \"packages/**/dist\" \"apps/**/dist\"",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "prepare": "husky install"
@@ -38,13 +37,11 @@
       "@tailwindcss/oxide",
       "esbuild",
       "msw",
-      "nx",
       "protobufjs"
     ]
   },
   "devDependencies": {
     "@moonrepo/cli": "1.41.5",
-    "@nx/js": "^21.6.5",
     "@tailwindcss/vite": "^4.1.14",
     "@types/node": "^22.8.1",
     "@types/react": "^19.2.2",
@@ -54,7 +51,6 @@
     "eslint-plugin-import": "^2.32.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.4",
-    "nx": "^21.6.5",
     "prettier": "^3.6.2",
     "rimraf": "^6.0.1",
     "tailwindcss": "^4.1.14",
