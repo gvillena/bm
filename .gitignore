@@ -176,3 +176,7 @@ husky-debug.log
 # ============================================================
 # END — Beneficio Mutuo Monorepo Git Ignore
 # ============================================================
+
+# moon
+.moon/cache
+.moon/docker

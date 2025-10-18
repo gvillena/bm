@@ -13,6 +13,7 @@
   },
   "scripts": {
     "nx": "nx",
+    "moon": "moon",
     "build:libs": "pnpm nx run-many --target=build --projects=aria,domain,policies,runtime,validation,sdk --parallel",
     "build:ui": "pnpm nx run ui:build",
     "build:web": "pnpm nx run web:build",
@@ -42,6 +43,7 @@
     ]
   },
   "devDependencies": {
+    "@moonrepo/cli": "1.41.5",
     "@nx/js": "^21.6.5",
     "@tailwindcss/vite": "^4.1.14",
     "@types/node": "^22.8.1",
