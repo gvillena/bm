@@ -24,6 +24,7 @@ export type { UiDirectives, UiAction, Tone } from "./types/ui.js";
 
 export type { Telemetry } from "./telemetry/index.js";
 export { ExperienceRuntimeProvider } from "./composition/context.js";
+export type { ExperienceRuntimeAdapters } from "./composition/context.js";
 export { useExperienceRuntime } from "./composition/useExperienceRuntime.js";
 export { useScene } from "./composition/useScene.js";
 export { useTransition } from "./composition/useTransition.js";

@@ -2,7 +2,7 @@ import { Component, type ErrorInfo, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 
 interface ErrorBoundaryProps {
-  readonly children: ReactNode;
+  readonly children?: ReactNode;
 }
 
 interface ErrorBoundaryState {
@@ -33,6 +33,6 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         </div>
       );
     }
-    return this.props.children;
+    return this.props.children ?? null;
   }
 }

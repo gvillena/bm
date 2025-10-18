@@ -1,6 +1,5 @@
 import { useMemo } from "react";
-import type { UiAction } from "@bm/aria";
-import type { UiDirectives } from "@bm/runtime";
+import type { UiAction, UiDirectives } from "@bm/aria";
 import { sanitizeRichText } from "../utils/sanitize.js";
 
 export interface PresenceHint {
@@ -34,7 +33,7 @@ export function usePresenceHint({
 
     const hints = (directives.hints ?? [])
       .slice(0, budget)
-      .map((hint, index) => {
+      .map((hint: string, index: number) => {
         const sanitized = sanitizeRichText(hint);
         const id = `aria-hint-${index}`;
         return {
@@ -46,7 +45,7 @@ export function usePresenceHint({
 
     const actions: PresenceAction[] = (directives.actions ?? [])
       .slice(0, 2)
-      .map((action) => ({
+      .map((action: UiAction) => ({
         ...action,
         sanitizedLabel: sanitizeRichText(action.label),
       }));

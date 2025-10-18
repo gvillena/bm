@@ -6,8 +6,8 @@ import { useAriaPresenceValue } from "@app/providers/AriaPresenceProvider";
 
 const PRESENCE_LEVELS = [
   { value: "minimal", label: "Mínima" },
-  { value: "balanced", label: "Equilibrada" },
-  { value: "protective", label: "Protectora" }
+  { value: "standard", label: "Equilibrada" },
+  { value: "immersive", label: "Inmersiva" }
 ] as const;
 
 type PresenceLevelValue = (typeof PRESENCE_LEVELS)[number]["value"];
@@ -16,7 +16,7 @@ function SettingsPage() {
   const prefersReducedMotion = useReducedMotionGuard();
   const { controller } = useAriaPresenceValue();
   const [reduceMotion, setReduceMotion] = useState(prefersReducedMotion);
-  const [presenceLevel, setPresenceLevel] = useState<PresenceLevelValue>("balanced");
+  const [presenceLevel, setPresenceLevel] = useState<PresenceLevelValue>("standard");
 
   useEffect(() => {
     controller.setLevel(presenceLevel);

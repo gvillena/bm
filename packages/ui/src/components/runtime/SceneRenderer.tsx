@@ -138,7 +138,10 @@ export function SceneRenderer({
             reasons={guardState.reasons}
             obligations={guardState.obligations}
             onConfirmObligation={(obligation) =>
-              onAction?.({ name: "confirm-obligation", params: obligation })
+              onAction?.({
+                name: "confirm-obligation",
+                params: { code: obligation.code, params: obligation.params }
+              })
             }
           />
         ) : null}

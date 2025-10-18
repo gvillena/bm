@@ -23,7 +23,7 @@
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "pnpm exec tsc -b",
+        "command": "pnpm exec tsc --noEmit --project tsconfig.app.json",
         "cwd": "apps/web"
       }
     },

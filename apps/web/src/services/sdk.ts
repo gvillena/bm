@@ -1,7 +1,6 @@
 import {
   HttpClient,
   configureClients,
-  requireClients,
   createMomentsClient,
   createAgreementsClient,
   createPoliciesClient,
@@ -10,7 +9,6 @@ import {
   createInvitationsClient,
   createPaymentsClient,
   createNotificationsClient,
-  createRuntimeAdapter,
   createAriaAdapter,
   viewerHeaders
 } from "@bm/sdk";
@@ -75,7 +73,10 @@ function nextSubscriptionId(): string {
 }
 
 function resolvePolicyEffect(viewerContext: ViewerContext, moment: MomentDTO): DecisionEffect {
-  const override = viewerContext.featureFlags?.mockPolicyEffect;
+  const override =
+    typeof viewerContext.featureFlags?.mockPolicyEffect === "string"
+      ? viewerContext.featureFlags.mockPolicyEffect
+      : undefined;
   if (override === "PERMIT" || override === "REDACT" || override === "DENY") {
     return override;
   }
@@ -99,6 +100,12 @@ function resolvePolicyEffect(viewerContext: ViewerContext, moment: MomentDTO): D
   return "DENY";
 }
 
+function sanitizeHeaders(headers: Record<string, string | undefined>): Record<string, string> {
+  return Object.fromEntries(
+    Object.entries(headers).filter(([, value]) => typeof value === "string")
+  ) as Record<string, string>;
+}
+
 function buildDecision(effect: DecisionEffect, moment: MomentDTO): MockDecision {
   switch (effect) {
     case "PERMIT":
@@ -111,7 +118,7 @@ function buildDecision(effect: DecisionEffect, moment: MomentDTO): MockDecision 
       return {
         effect,
         reasons: [{ code: "TEASER_ONLY", detail: "Se requiere consentimiento vigente" }],
-        obligations: ["COMPLETE_CONSENT"],
+        obligations: [{ code: "COMPLETE_CONSENT" }],
         dto: {
           id: moment.id,
           teaser: moment.teaser,
@@ -140,7 +147,7 @@ function createMockSdkClients(): SdkClients {
         ownerId: "user_owner",
         ownerTier: "CIRCLE",
         gating: {
-          requireConsentValid: true,
+          requireConsentFresh: true,
           requireSharedHistory: false
         },
         accessRequirements: {
@@ -211,7 +218,7 @@ function createMockSdkClients(): SdkClients {
                 .includes(params.q?.toLowerCase() ?? "")
             )
           : items;
-        const pageSize = params?.pageSize ?? filtered.length || 1;
+        const pageSize = params?.pageSize ?? (filtered.length || 1);
         const page = params?.page ?? 1;
         const start = (page - 1) * pageSize;
         const pageItems = filtered.slice(start, start + pageSize).map((moment) => deepClone(moment));
@@ -231,11 +238,12 @@ function createMockSdkClients(): SdkClients {
       },
       async create(input) {
         const id = nextMomentId();
+        const visibility: MomentDTO["visibility"] = input.visibility === "PUBLIC" ? "PUBLIC" : "INVITE_ONLY";
         const moment: MomentDTO = {
           id,
           teaser: input.teaser,
           details: input.details ?? input.teaser,
-          visibility: input.visibility ?? "INVITE_ONLY",
+          visibility,
           tags: input.tags,
           ownerId: "user_owner",
           ownerTier: "CIRCLE"
@@ -262,7 +270,7 @@ function createMockSdkClients(): SdkClients {
         if (!moment) {
           return { effect: "DENY" };
         }
-        const effect = resolvePolicyEffect(viewer, moment);
+        const effect = resolvePolicyEffect(viewer as ViewerContext, moment);
         const decision = buildDecision(effect, moment);
         return { effect: decision.effect, dto: decision.dto };
       }
@@ -360,11 +368,12 @@ function createMockSdkClients(): SdkClients {
         if (!moment) {
           return { effect: "DENY", reasons: [{ code: "NOT_FOUND" }] } satisfies MockDecision;
         }
-        const effect = resolvePolicyEffect(viewerContext, moment);
+        const effect = resolvePolicyEffect(viewerContext as ViewerContext, moment);
         return buildDecision(effect, moment);
       },
       async authorizeEditAgreement(viewerContext, _agreementId) {
-        if (viewerContext.role === "owner" || viewerContext.role === "moderator") {
+        const viewer = viewerContext as ViewerContext;
+        if (viewer.role === "owner" || viewer.role === "moderator") {
           return {
             effect: "PERMIT",
             reasons: [{ code: "EDIT_ALLOWED", detail: "Rol con privilegios" }]
@@ -373,7 +382,7 @@ function createMockSdkClients(): SdkClients {
         return {
           effect: "REDACT",
           reasons: [{ code: "REVIEW_REQUIRED", detail: "Se requiere aprobación" }],
-          obligations: ["REQUEST_REVIEW"]
+          obligations: [{ code: "REQUEST_REVIEW" }]
         } satisfies MockDecision;
       },
       async getPolicySnapshot() {
@@ -440,7 +449,7 @@ export function initializeSdk(telemetry: FrontendTelemetry): { http: HttpClient;
     const http = new HttpClient({
       baseURL: env.apiBaseUrl,
       telemetry: telemetry.sdk,
-      defaultHeaders: viewerHeaders()
+      defaultHeaders: sanitizeHeaders(viewerHeaders())
     });
     const clients = createMockSdkClients();
     configureClients(clients);
@@ -451,7 +460,7 @@ export function initializeSdk(telemetry: FrontendTelemetry): { http: HttpClient;
   const http = new HttpClient({
     baseURL: env.apiBaseUrl,
     telemetry: telemetry.sdk,
-    defaultHeaders: viewerHeaders()
+    defaultHeaders: sanitizeHeaders(viewerHeaders())
   });
 
   http.useRequestInterceptor(async (ctx) => {
@@ -479,15 +488,6 @@ export function initializeSdk(telemetry: FrontendTelemetry): { http: HttpClient;
   configureClients(clients);
   cached = { http, clients };
   return cached;
-}
-
-export function getRuntimeEffects() {
-  const { clients } = requireClients();
-  return createRuntimeAdapter({
-    moments: clients.moments,
-    policies: clients.policies,
-    consent: clients.consent
-  });
 }
 
 export function getAriaBridge(http: HttpClient): AriaBridge {

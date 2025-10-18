@@ -65,7 +65,10 @@ function ensureProvider(): WebTracerProvider {
           clearTimingResources: true,
           propagateTraceHeaderCorsUrls: [/.*/],
           applyCustomAttributesOnSpan(span, request) {
-            span.setAttribute("http.request.method", request.request.method);
+            const originalRequest = (request as { request?: Request }).request;
+            if (originalRequest instanceof Request) {
+              span.setAttribute("http.request.method", originalRequest.method);
+            }
           }
         })
       ]
@@ -81,7 +84,6 @@ function createRuntimeTelemetry(withSpan: FrontendTelemetry["withSpan"]): Runtim
       void withSpan({
         name: "runtime.transition",
         attributes: {
-          "runtime.graph_id": record.graphId,
           "runtime.to": record.to,
           "runtime.from": record.from
         },

@@ -1,4 +1,4 @@
-import type { UiDirectives } from "@bm/runtime";
+import type { UiAction, UiDirectives } from "@bm/aria";
 import { usePresenceHint } from "../../hooks/usePresenceHint.js";
 import { Badge } from "../base/Badge.js";
 import { Button } from "../base/Button.js";
@@ -8,9 +8,9 @@ export interface AriaInlineProps {
   readonly presenceBudget?: number;
   /**
    * Acción disparada al hacer clic sobre un botón de acción.
-   * Se recibe la referencia de acción (`actionRef.name`) si está disponible.
+   * Recibe la referencia de la acción completa.
    */
-  readonly onAction?: (actionRefName: string) => void;
+  readonly onAction?: (actionRef: UiAction["actionRef"]) => void;
 }
 
 /**
@@ -48,10 +48,7 @@ export function AriaInline({
       {/* 🔵 Acciones contextuales */}
       {actions.map((action) => {
         const label = String(action.sanitizedLabel ?? action.label ?? "Action");
-        const actionName =
-          typeof action.actionRef === "object"
-            ? ((action.actionRef as { name?: string }).name ?? "unknown")
-            : String(action.actionRef ?? "unknown");
+        const actionName = action.actionRef.name ?? "unknown";
 
         return (
           <Button
@@ -64,7 +61,7 @@ export function AriaInline({
                   : "ghost"
             }
             size="sm"
-            onClick={() => onAction?.(actionName)}
+            onClick={() => onAction?.(action.actionRef)}
           >
             {label}
           </Button>
