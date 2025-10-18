@@ -1,0 +1,83 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+language: 'typescript'
+type: 'library'
+tags:
+  - 'type:library'
+  - 'scope:ui'
+
+dependsOn:
+  - 'aria'
+  - 'domain'
+  - 'policies'
+  - 'runtime'
+  - 'sdk'
+  - 'validation'
+
+tasks:
+  build:
+    command: 'pnpm exec unbuild'
+    deps:
+      - 'typecheck'
+      - '^:build'
+    inputs:
+      - 'src/**/*'
+      - 'package.json'
+      - 'tsconfig.json'
+    outputs:
+      - 'dist'
+  dev:
+    command: 'pnpm exec unbuild'
+    args:
+      - '--stub'
+    options:
+      cache: false
+  playground:
+    command: 'pnpm exec vite'
+    options:
+      cache: false
+      runInCI: false
+      shell: true
+  typecheck:
+    command: 'pnpm exec tsc'
+    args:
+      - '-p'
+      - 'tsconfig.json'
+    deps:
+      - '^:typecheck'
+  lint:
+    command: 'pnpm exec eslint'
+    args:
+      - '.'
+  test:
+    command: 'pnpm exec vitest'
+    args:
+      - 'run'
+  test-a11y:
+    command: 'pnpm exec vitest'
+    args:
+      - 'run'
+      - 'tests/a11y.spec.ts'
+  storybook:
+    command: 'pnpm exec storybook'
+    args:
+      - 'dev'
+      - '-p'
+      - '6006'
+    options:
+      cache: false
+      runInCI: false
+  build-storybook:
+    command: 'pnpm exec storybook'
+    args:
+      - 'build'
+    outputs:
+      - 'storybook-static'
+  format:
+    command: 'pnpm exec prettier'
+    args:
+      - '--write'
+      - '**/*.{ts,tsx,md,css}'
+    options:
+      cache: false
+      runInCI: false

@@ -1,0 +1,69 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+language: 'typescript'
+type: 'application'
+tags:
+  - 'type:application'
+  - 'scope:web'
+
+dependsOn:
+  - 'aria'
+  - 'domain'
+  - 'policies'
+  - 'runtime'
+  - 'sdk'
+  - 'ui'
+  - 'validation'
+
+tasks:
+  dev:
+    command: 'pnpm exec vite'
+    options:
+      cache: false
+      runInCI: false
+  build:
+    command: 'pnpm exec vite'
+    args:
+      - 'build'
+    deps:
+      - 'typecheck'
+      - '^:build'
+    outputs:
+      - 'dist'
+  typecheck:
+    command: 'pnpm exec tsc'
+    args:
+      - '--noEmit'
+      - '--project'
+      - 'tsconfig.app.json'
+    deps:
+      - '^:typecheck'
+  preview:
+    command: 'pnpm exec vite'
+    args:
+      - 'preview'
+    options:
+      cache: false
+      runInCI: false
+  lint:
+    command: 'pnpm exec eslint'
+    args:
+      - '.'
+  test:
+    command: 'pnpm exec vitest'
+    args:
+      - 'run'
+      - '--coverage'
+    outputs:
+      - 'coverage'
+  test-a11y:
+    command: 'pnpm exec vitest'
+    args:
+      - 'run'
+      - 'tests/a11y/pages-a11y.spec.ts'
+  test-e2e:
+    command: 'pnpm exec playwright'
+    args:
+      - 'test'
+    options:
+      cache: false

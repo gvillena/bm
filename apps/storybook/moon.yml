@@ -1,0 +1,56 @@
+$schema: 'https://moonrepo.dev/schemas/project.json'
+
+language: 'typescript'
+type: 'application'
+tags:
+  - 'type:application'
+  - 'scope:storybook'
+
+dependsOn:
+  - 'ui'
+
+tasks:
+  dev:
+    command: 'pnpm exec vite'
+    options:
+      cache: false
+      runInCI: false
+  build:
+    command: 'pnpm exec vite'
+    args:
+      - 'build'
+    deps:
+      - 'typecheck'
+      - '^:build'
+    outputs:
+      - 'dist'
+  typecheck:
+    command: 'pnpm exec tsc'
+    args:
+      - '-b'
+  preview:
+    command: 'pnpm exec vite'
+    args:
+      - 'preview'
+    options:
+      cache: false
+      runInCI: false
+  lint:
+    command: 'pnpm exec eslint'
+    args:
+      - '.'
+  storybook:
+    command: 'pnpm exec storybook'
+    args:
+      - 'dev'
+      - '-p'
+      - '6006'
+    options:
+      cache: false
+      runInCI: false
+  build-storybook:
+    command: 'pnpm exec storybook'
+    args:
+      - 'build'
+    outputs:
+      - 'storybook-static'
