@@ -50,7 +50,6 @@ function MomentViewPage() {
         </div>
       ) : null}
       <PolicyReasons
-        effect={decision}
         reasons={reasons?.map((reason) => ({ code: reason.code, detail: reason.message ?? "" })) ?? []}
         obligations={obligations?.map((code) => ({ code }))}
       />

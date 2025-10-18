@@ -2,10 +2,12 @@ import type { ViewerContext } from "@bm/policies";
 import type { PolicyDecisionResult } from "@bm/runtime";
 import { requireClients } from "@bm/sdk";
 
+type ObligationInput = string | { code: string; params?: Record<string, unknown> };
+
 interface DecisionLike {
   effect: PolicyDecisionResult["decision"];
   reasons?: { code: string; detail?: string }[];
-  obligations?: string[];
+  obligations?: ObligationInput[];
   dto?: unknown;
 }
 
@@ -13,7 +15,9 @@ function mapDecision(decision: DecisionLike): PolicyDecisionResult {
   return {
     decision: decision.effect,
     reasons: decision.reasons?.map((reason) => ({ code: reason.code, message: reason.detail ?? "" })),
-    obligations: decision.obligations,
+    obligations: decision.obligations?.map((obligation) =>
+      typeof obligation === "string" ? obligation : obligation.code
+    ),
     dto: decision.dto
   } satisfies PolicyDecisionResult;
 }

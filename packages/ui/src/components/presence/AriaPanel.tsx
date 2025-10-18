@@ -1,4 +1,4 @@
-import type { UiDirectives } from "@bm/aria";
+import type { UiAction, UiDirectives } from "@bm/aria";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { usePresenceHint } from "../../hooks/usePresenceHint.js";
@@ -25,9 +25,9 @@ export interface AriaPanelProps {
 
   /**
    * Callback al hacer clic sobre una acción.
-   * Recibe el nombre del `actionRef` si existe.
+   * Recibe la referencia completa de la acción.
    */
-  readonly onAction?: (actionRefName: string) => void;
+  readonly onAction?: (actionRef: UiAction["actionRef"]) => void;
 }
 
 /**
@@ -105,19 +105,10 @@ export function AriaPanel({
                 <div className="flex flex-col gap-2">
                   {actions.map((action) => {
                     const label = String(
-                      action.sanitizedLabel ??
-                        action.label ??
-                        (typeof action.actionRef === "object"
-                          ? (action.actionRef as { name?: string }).name
-                          : action.actionRef) ??
-                        "Action"
+                      action.sanitizedLabel ?? action.label ?? action.actionRef.name ?? "Action"
                     );
 
-                    const actionName =
-                      typeof action.actionRef === "object"
-                        ? ((action.actionRef as { name?: string }).name ??
-                          "unknown")
-                        : String(action.actionRef ?? "unknown");
+                    const actionName = action.actionRef.name ?? "unknown";
 
                     return (
                       <Button
@@ -129,7 +120,7 @@ export function AriaPanel({
                               ? "secondary"
                               : "primary"
                         }
-                        onClick={() => onAction?.(actionName)}
+                        onClick={() => onAction?.(action.actionRef)}
                       >
                         {label}
                       </Button>

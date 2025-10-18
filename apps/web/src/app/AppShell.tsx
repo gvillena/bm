@@ -1,11 +1,11 @@
-import { Suspense, useMemo } from "react";
+import { Suspense, useMemo, type ReactElement } from "react";
 import { RouterProvider } from "react-router-dom";
 import { useReducedMotionGuard } from "@motion/guards";
 import { CinematicLayout } from "@app/CinematicLayout";
 import { createAppRouter } from "@app/router/routes";
 import { useUIProviders } from "@bm/ui/providers/UIProviders";
 
-export function AppShell(): JSX.Element {
+export function AppShell(): ReactElement {
   const reducedMotion = useReducedMotionGuard();
   const { queryClient } = useUIProviders();
   const router = useMemo(() => createAppRouter({ queryClient }), [queryClient]);

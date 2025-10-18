@@ -1,4 +1,4 @@
-import type { UiDirectives } from "@bm/aria";
+import type { UiAction, UiDirectives } from "@bm/aria";
 import {
   Dialog,
   DialogContent,
@@ -17,9 +17,9 @@ export interface AriaImmersiveProps {
 
   /**
    * Callback invocado al hacer clic en una acción contextual.
-   * Recibe el nombre (string) del actionRef, si existe.
+   * Recibe la referencia completa de la acción.
    */
-  readonly onAction?: (actionRefName: string) => void;
+  readonly onAction?: (actionRef: UiAction["actionRef"]) => void;
 }
 
 /**
@@ -67,18 +67,10 @@ export function AriaImmersive({
             <div className="flex flex-wrap gap-3">
               {actions.map((action) => {
                 const label = String(
-                  action.sanitizedLabel ??
-                    action.label ??
-                    (typeof action.actionRef === "object"
-                      ? (action.actionRef as { name?: string }).name
-                      : action.actionRef) ??
-                    "Action"
+                  action.sanitizedLabel ?? action.label ?? action.actionRef.name ?? "Action"
                 );
 
-                const actionName =
-                  typeof action.actionRef === "object"
-                    ? (action.actionRef as { name?: string }).name ?? "unknown"
-                    : String(action.actionRef ?? "unknown");
+                const actionName = action.actionRef.name ?? "unknown";
 
                 return (
                   <Button
@@ -91,7 +83,7 @@ export function AriaImmersive({
                         : "primary"
                     }
                     size="lg"
-                    onClick={() => onAction?.(actionName)}
+                    onClick={() => onAction?.(action.actionRef)}
                   >
                     {label}
                   </Button>

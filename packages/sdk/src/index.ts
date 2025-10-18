@@ -37,7 +37,9 @@ export {
 export { configureClients, requireClients } from "./clients/registry.js";
 export { createRuntimeAdapter } from "./adapters/runtime.adapter.js";
 export { createAriaAdapter } from "./adapters/aria.adapter.js";
+export type { AriaBridge } from "./adapters/aria.adapter.js";
 export * from "./hooks/index.js";
 export * from "./types/index.js";
 export * from "./types/errors.js";
 export * from "./types/telemetry.js";
+export type { SdkClients } from "./clients/registry.js";

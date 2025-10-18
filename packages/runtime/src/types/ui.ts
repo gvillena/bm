@@ -1,18 +1,19 @@
-export type Tone =
-  | "neutral"
-  | "warm"
-  | "direct"
-  | "protective"
-  | "caring"
-  | "calm"
-  | "clear";
+export type Tone = "neutral" | "warm" | "direct" | "caring" | "protective";
 
 export interface UiAction {
-  name: string;
-  params?: Record<string, unknown>;
+  label: string;
+  actionRef: {
+    name: string;
+    params?: Record<string, unknown>;
+  };
+  kind?: "primary" | "secondary" | "danger" | "ghost";
+  requiresConsent?: boolean;
 }
 
 export interface UiDirectives {
-  tone?: Tone;
+  hints?: string[];
   actions?: UiAction[];
+  tone?: Tone;
+  explain?: string;
+  ephemeral?: boolean;
 }
