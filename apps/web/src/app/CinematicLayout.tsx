@@ -1,9 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { enterScene, exitScene } from "@motion/gsap-orchestrator";
 
 export interface CinematicLayoutProps {
-  readonly children: React.ReactNode;
+  readonly children: ReactNode;
   readonly prefersReducedMotion: boolean;
 }
 

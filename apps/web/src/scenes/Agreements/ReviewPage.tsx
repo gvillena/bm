@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { AgreementReview } from "@bm/ui/components/patterns/AgreementReview";
+import { AgreementReview } from "@bm/ui";
 import type { AgreementDiff } from "@bm/sdk";
 import { ExperienceBoundary, useExperience } from "@experience/runtime/hooks";
 import { useAriaPresenceValue } from "@app/providers/AriaPresenceProvider";

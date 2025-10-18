@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { authorizeViewMoment } from "@services/policies";
 import { useViewerContext } from "@app/gating/useViewerContext";
-import { PolicyReasons } from "@bm/ui/components/patterns/PolicyReasons";
+import { PolicyReasons } from "@bm/ui";
 import { fadeIn } from "@motion/presets";
 
 function MomentViewPage() {

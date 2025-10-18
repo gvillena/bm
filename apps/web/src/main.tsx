@@ -1,4 +1,4 @@
-import React from "react";
+import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { AppProviders } from "@app/providers/AppProviders";
 import { AppShell } from "@app/AppShell";
@@ -10,9 +10,9 @@ if (!rootElement) {
 }
 
 ReactDOM.createRoot(rootElement).render(
-  <React.StrictMode>
+  <StrictMode>
     <AppProviders>
       <AppShell />
     </AppProviders>
-  </React.StrictMode>
+  </StrictMode>
 );

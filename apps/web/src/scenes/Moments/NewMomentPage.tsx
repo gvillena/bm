@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
-import { useZodForm } from "@bm/ui/hooks";
+import { useZodForm } from "@bm/ui";
 import { fadeIn } from "@motion/presets";
 import { motion } from "framer-motion";
 

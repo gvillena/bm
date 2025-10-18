@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link as RouterLink, type LinkProps } from "react-router-dom";
+import type { ComponentType } from "react";
 
 export function NotFound() {
   return (
@@ -8,12 +9,14 @@ export function NotFound() {
       <p className="max-w-lg text-sm text-foreground/70">
         Podés volver al inicio o seguir explorando desde tu panel. Ningún compromiso se ejecutó sin tu consentimiento.
       </p>
-      <Link
+      <RouterLinkCompat
         to="/"
         className="rounded-full bg-accent px-6 py-3 text-sm font-medium text-white shadow-glow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       >
         Volver al inicio
-      </Link>
+      </RouterLinkCompat>
     </section>
   );
 }
+
+const RouterLinkCompat = RouterLink as ComponentType<LinkProps>;

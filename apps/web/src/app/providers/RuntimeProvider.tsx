@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useContext, useMemo, type ReactNode } from "react";
 import type { RuntimeContext } from "@bm/runtime";
 import type { SdkClients, HttpClient } from "@bm/sdk";
 import type { FrontendTelemetry } from "@services/telemetry";
@@ -19,7 +19,7 @@ export interface RuntimeEnvironment {
 
 const RuntimeEnvironmentContext = createContext<RuntimeEnvironment | null>(null);
 
-export function RuntimeProvider({ children }: { children: React.ReactNode }) {
+export function RuntimeProvider({ children }: { children: ReactNode }) {
   const telemetry = useTelemetry();
   const viewerContext = useViewerContext();
   const featureFlags = useFeatureFlags();

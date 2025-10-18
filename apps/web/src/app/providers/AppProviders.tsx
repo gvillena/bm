@@ -1,13 +1,13 @@
-import { useMemo } from "react";
+import { useMemo, type ComponentType, type ReactNode } from "react";
 import { QueryClient } from "@tanstack/react-query";
-import { UIProviders } from "@bm/ui/providers/UIProviders";
-import { I18nextProvider } from "react-i18next";
+import { UIProviders } from "@bm/ui";
+import { I18nextProvider, type I18nextProviderProps } from "react-i18next";
 import { ensureI18n } from "@services/i18n";
 import { TelemetryProvider } from "@services/telemetry";
 import { RuntimeProvider } from "@app/providers/RuntimeProvider";
 import { AriaPresenceProvider } from "@app/providers/AriaPresenceProvider";
 
-export function AppProviders({ children }: { children: React.ReactNode }) {
+export function AppProviders({ children }: { children: ReactNode }) {
   const queryClient = useMemo(
     () =>
       new QueryClient({
@@ -23,13 +23,15 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
 
   return (
     <UIProviders initialTheme="dark" queryClient={queryClient}>
-      <I18nextProvider i18n={i18n}>
+      <I18nextProviderCompat i18n={i18n}>
         <TelemetryProvider>
           <RuntimeProvider>
             <AriaPresenceProvider>{children}</AriaPresenceProvider>
           </RuntimeProvider>
         </TelemetryProvider>
-      </I18nextProvider>
+      </I18nextProviderCompat>
     </UIProviders>
   );
 }
+
+const I18nextProviderCompat = I18nextProvider as ComponentType<I18nextProviderProps>;
